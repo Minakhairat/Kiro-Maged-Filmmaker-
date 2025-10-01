@@ -10,21 +10,17 @@
     *{box-sizing:border-box} html,body{height:100%}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Kufi Arabic",Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
     a{text-decoration:none;color:inherit} .container{width:min(1150px,92%);margin-inline:auto}
-
     .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 1.2rem;border-radius:14px;border:1px solid transparent;cursor:pointer;font-weight:600;transition:.25s}
     .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)} .btn-outline{background:transparent;color:var(--text);border-color:#666}
     .btn:hover{transform:translateY(-2px) scale(1.01)}
-
     header.hero{position:relative;min-height:72vh;display:grid;place-items:center;text-align:center;background:radial-gradient(1200px 500px at 50% 0%, rgba(230,57,70,.15), transparent)}
     .hero .content{position:relative;z-index:2;padding:0 1rem}
     .hero h1{font-size:clamp(32px,5vw,64px);line-height:1.1;margin:0 0 1rem}
     .hero p{color:var(--muted);max-width:55ch;margin:0 auto 1.2rem}
     .cta{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
-
     section{padding:70px 0}
     .section-title{text-align:center;font-size:clamp(24px,3vw,36px);margin:0 0 18px}
     .section-sub{text-align:center;color:var(--muted);margin-bottom:34px}
-
     .grid{display:grid;gap:18px} .grid.portfolio{grid-template-columns:repeat(12,1fr)}
     .tile{position:relative;border-radius:18px;overflow:hidden;background:#000;min-height:220px;box-shadow:var(--shadow);cursor:pointer}
     .tile img{width:100%;height:100%;object-fit:cover;display:block;background:#000}
@@ -33,25 +29,20 @@
     .tile .meta{position:absolute;inset-inline:14px;bottom:12px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px}
     .badge{font-size:12px;padding:.38rem .6rem;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25)}
     .col-6{grid-column:span 6} .col-8{grid-column:span 8} .col-4{grid-column:span 4} .col-12{grid-column:span 12}
-
     .services,.offers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
     .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:22px;box-shadow:var(--shadow);transition:.25s}
     .card:hover{transform:translateY(-4px)} .card p{margin:0;color:var(--muted)}
     .offer{background:linear-gradient(135deg,rgba(230,57,70,.1),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px;backdrop-filter:blur(6px)}
     .offer .price{font-size:28px;font-weight:800;margin:6px 0 12px}
-
     .contact{display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
     form{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
     .field{display:grid;gap:6px;margin-bottom:12px}
     .field input,.field textarea,.field select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:var(--text)}
     [data-theme="light"] .field input,[data-theme="light"] .field textarea,[data-theme="light"] .field select{background:#fff;border-color:#ddd;color:#111}
-
     footer{padding:28px 0;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,.08)}
-
     .filters{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
-    .chip{padding:.5rem .9rem;border-radius:999px;border:1px solid #555;cursor:pointer;font-size:.9rem;transition:.2s}
+    .chip{padding:.5rem .9rem;border-radius:999px;border:1px solid #555;cursor:pointer;font-size:.9rem;transition:.2س}
     .chip.active,.chip:hover{background:var(--primary);color:#fff;border-color:transparent}
-
     .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
     .modal.open{display:flex}
     .modal .box{width:min(1000px,95%);background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
@@ -60,19 +51,16 @@
     .modal .content{padding:0;display:grid}
     .responsive-video{position:relative;width:100%;padding-top:56.25%;background:#000}
     .responsive-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-
     .reveal{transform:translateY(14px);opacity:0;transition:.6s ease} .reveal.visible{transform:none;opacity:1}
     @media (max-width:900px){.services,.offers{grid-template-columns:1fr 1fr}.contact{grid-template-columns:1fr}.col-8,.col-6,.col-4{grid-column:span 12}}
     @media (max-width:600px){.services,.offers{grid-template-columns:1fr}.hero p{font-size:.98rem}}
   </style>
 </head>
 <body>
-  <!-- Theme Toggle -->
   <div class="container" style="position:fixed; left:16px; top:16px; z-index:60">
     <button id="themeToggle" class="btn btn-outline" aria-label="تبديل المظهر">🌙 / ☀️</button>
   </div>
 
-  <!-- HERO -->
   <header class="hero">
     <div class="content">
       <h1 class="reveal">نحوّل لحظاتك إلى فيلم لا يُنسى</h1>
@@ -84,7 +72,6 @@
     </div>
   </header>
 
-  <!-- PORTFOLIO -->
   <section id="portfolio" class="container">
     <h2 class="section-title reveal">أعمال مختارة</h2>
     <p class="section-sub reveal">فلتر حسب نوع المشروع</p>
@@ -98,7 +85,7 @@
     </div>
 
     <div class="grid portfolio">
-      <!-- 1) YouTube (أول عمل) -->
+      <!-- YouTube -->
       <article class="tile col-8 reveal" data-cat="commercial" data-title="إعلان عطور — Noir"
                data-link="https://youtu.be/LeFb5SOypzo?si=RVkGNmEMpJUn4rMZ">
         <img alt="Commercial Ad" />
@@ -106,7 +93,7 @@
         <div class="meta"><span>إعلان براند</span><span class="badge">60 ثانية</span></div>
       </article>
 
-      <!-- 2) Facebook (نفس الرابط لكل الباقي حسب طلبك) -->
+      <!-- Facebook (نفس الرابط) -->
       <article class="tile col-4 reveal" data-cat="wedding" data-title="Wedding — Sara & Ali"
                data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
         <img alt="Wedding Film" />
@@ -115,20 +102,20 @@
       </article>
 
       <article class="tile col-6 reveal" data-cat="event" data-title="Tech Summit 2025"
-               data-link="https://www.facebook.com/share/v/1713j7bzhb/">
+               data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
         <img alt="Event Coverage" />
         <div class="overlay"></div>
         <div class="meta"><span>تغطية حدث</span><span class="badge">هايلايت</span></div>
       </article>
 
       <article class="tile col-6 reveal" data-cat="social" data-title="Reels Pack for Brand X"
-               data-link="https://www.facebook.com/share/v/1713j7bzhb/">
+               data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
         <img alt="Social Media Reels" />
         <div class="overlay"></div>
         <div class="meta"><span>ريلز سوشيال</span><span class="badge">9×16</span></div>
       </article>
 
-      <!-- 3) Instagram Reel -->
+      <!-- Instagram -->
       <article class="tile col-6 reveal" data-cat="social" data-title="Instagram Reel"
                data-link="https://www.instagram.com/reel/DDCeFbToalV/?igsh=MWU0bzZ5MTZveWY0cA==">
         <img alt="Instagram Reel" />
@@ -136,7 +123,7 @@
         <div class="meta"><span>Instagram Reel</span><span class="badge">قصير</span></div>
       </article>
 
-      <!-- 4) Google Drive -->
+      <!-- Google Drive -->
       <article class="tile col-12 reveal" data-cat="commercial" data-title="Google Drive Video"
                data-link="https://drive.google.com/file/d/1ydYdWj2P9zw0vob8F4-HZi4HQPNmsg-A/view?usp=drivesdk">
         <img alt="Google Drive Video" />
@@ -146,7 +133,6 @@
     </div>
   </section>
 
-  <!-- SERVICES -->
   <section id="services" class="container">
     <h2 class="section-title reveal">الخدمات</h2>
     <p class="section-sub reveal">حلول كاملة من التخطيط للتسليم</p>
@@ -157,7 +143,6 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
   <section id="contact" class="container">
     <h2 class="section-title reveal">تواصل</h2>
     <p class="section-sub reveal">هنرجع لك في أقل من 24 ساعة</p>
@@ -183,7 +168,6 @@
 
   <footer>© 2025 جميع الحقوق محفوظة — YourBrand Films</footer>
 
-  <!-- MODAL -->
   <div class="modal" id="modal">
     <div class="box">
       <header>
@@ -236,6 +220,9 @@
       await Promise.all(tiles.map(async (t) => {
         const img = t.querySelector('img'); if (!img) return;
         const link = t.dataset.link || '';
+        const manualPoster = t.dataset.poster;
+
+        if (manualPoster) { img.src = manualPoster; return; }
 
         if (/youtu\.be|youtube\.com/i.test(link)) {
           const id = getYouTubeId(link); if (id) { img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; return; }
@@ -251,12 +238,20 @@
         }
         if (isInstagram(link))  { img.src = svgThumb('Instagram Reel', '#E1306C'); return; }
         if (isFacebook(link))   { img.src = svgThumb('Facebook Video',  '#1877F2'); return; }
-        if (isDrive(link))      { img.src = svgThumb('Google Drive',    '#22c55e'); return; }
-        if (!img.src)           { img.src = svgThumb('Video'); }
+
+        // ✅ Google Drive thumbnail الرسمي (لو الملف Public)
+        if (isDrive(link)) {
+          const id = driveId(link);
+          img.src = `https://drive.google.com/thumbnail?id=${id}&sz=w1280`;
+          img.onerror = () => { img.src = svgThumb('Google Drive', '#22c55e'); };
+          return;
+        }
+
+        if (!img.src) img.src = svgThumb('Video');
       }));
     }
 
-    // Build embed URL
+    // Build embed URL (مع حل خاص لجوجل درايف)
     const buildEmbed = (link) => {
       if (!link) return null;
 
@@ -269,21 +264,17 @@
         if (id) return { kind:'iframe', src:`https://player.vimeo.com/video/${id}?autoplay=1&muted=1` };
       }
       if (isInstagram(link)) {
-        // Instagram embed (Public only)
         return { kind:'iframe', src:`${link.replace(/\/$/,'')}/embed` };
       }
       if (isFacebook(link)) {
-        // Facebook embed (Public only)
         return { kind:'iframe', src:`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(link)}&show_text=false&autoplay=1&mute=1&allowfullscreen=true` };
       }
       if (isDrive(link)) {
         const id = driveId(link);
-        // Google Drive preview
-        return { kind:'iframe', src:`https://drive.google.com/file/d/${id}/preview?autoplay=1&mute=1` };
+        // أولاً نحاول تشغيله كـ <video> مباشر (غالبًا بيشتغل ويقبل autoplay لما يكون muted)
+        return { kind:'drive', id };
       }
-      if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(link)) {
-        return { kind:'video', src: link };
-      }
+      if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(link)) return { kind:'video', src: link };
       return null;
     };
 
@@ -295,7 +286,7 @@
       const f = btn.dataset.filter; tiles.forEach(t => t.style.display = (f==='all'||t.dataset.cat===f)?'':'none');
     }));
 
-    // Modal
+    // Modal open
     const modal = document.getElementById('modal');
     const modalTitle = document.getElementById('modalTitle');
     const modalContent = document.getElementById('modalContent');
@@ -310,24 +301,38 @@
       const link = t.dataset.link;
       const emb = buildEmbed(link);
 
-      if (emb && emb.kind === 'iframe') {
+      const showIframe = (src) => {
         const wrap = document.createElement('div'); wrap.className = 'responsive-video';
         const iframe = document.createElement('iframe');
-        iframe.src = emb.src;
+        iframe.src = src;
         iframe.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
         iframe.setAttribute('allowfullscreen','true');
         wrap.appendChild(iframe); modalContent.appendChild(wrap);
-        modalOpenLink.style.display = ''; modalOpenLink.href = link || '#';
+      };
+
+      if (emb && emb.kind === 'iframe') {
+        showIframe(emb.src);
       } else if (emb && emb.kind === 'video') {
         const v = document.createElement('video'); v.src = emb.src; v.controls = true; v.autoplay = true; v.muted = true; v.playsInline = true; v.style.width='100%';
         modalContent.appendChild(v);
-        modalOpenLink.style.display = link ? '' : 'none'; modalOpenLink.href = link || '#';
+      } else if (emb && emb.kind === 'drive') {
+        // ✅ جرّب تشغيل مباشر من uc?export=download
+        const v = document.createElement('video');
+        v.src = `https://drive.google.com/uc?export=download&id=${emb.id}`;
+        v.controls = true; v.autoplay = true; v.muted = true; v.playsInline = true; v.style.width='100%';
+        v.onerror = () => {
+          // fallback لِـ preview لو ممنوع
+          modalContent.innerHTML = '';
+          showIframe(`https://drive.google.com/file/d/${emb.id}/preview?autoplay=1&mute=1`);
+        };
+        modalContent.appendChild(v);
       } else {
-        const label = isInstagram(link) ? 'Instagram' : isFacebook(link) ? 'Facebook' : isDrive(link) ? 'Drive' : 'Video';
-        const img = new Image(); img.src = svgThumb(`${label} (Open Externally)`); img.alt = label; img.style.width='100%';
+        const img = new Image(); img.src = svgThumb('Video'); img.alt = 'Video'; img.style.width='100%';
         modalContent.appendChild(img);
-        modalOpenLink.style.display = link ? '' : 'none'; modalOpenLink.href = link || '#';
       }
+
+      modalOpenLink.style.display = link ? '' : 'none';
+      modalOpenLink.href = link || '#';
       modal.classList.add('open');
     }));
 
@@ -337,7 +342,6 @@
       alert('تم استلام رسالتك!\n\n' + JSON.stringify(data, null, 2)); e.target.reset();
     });
 
-    // Run thumbnails
     applyAutoThumbnails();
   </script>
 </body>
