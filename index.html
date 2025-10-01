@@ -1,347 +1,301 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>بورتفوليو مصور فيديوغرافي</title>
+  <title>بورتفوليو مصور فيديوغرافي — نسخة برو</title>
+  <meta name="description" content="بورتفوليو تفاعلي لمصور فيديوغرافي: أعمال، أسعار، باقات، حاسبة عرض سعر، حجز مواعيد، حالات نجاح، أسئلة شائعة، وواجهة عربية بالكامل.">
   <style>
-    :root { --bg:#0b0b0b; --card:#111; --text:#f2f2f2; --muted:#b7b7b7; --primary:#e63946; --shadow:0 10px 30px rgba(0,0,0,.35); }
-    [data-theme="light"] { --bg:#f7f7f7; --card:#fff; --text:#0b0b0b; --muted:#444; --primary:#e11d48; --shadow:0 10px 30px rgba(0,0,0,.1); }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Kufi Arabic",Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
-    a{text-decoration:none;color:inherit} .container{width:min(1150px,92%);margin-inline:auto}
-    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 1.2rem;border-radius:14px;border:1px solid transparent;cursor:pointer;font-weight:600;transition:.25s}
-    .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)} .btn-outline{background:transparent;color:var(--text);border-color:#666}
+    :root{
+      --bg:#0a0b0f; --surface:#0f1117; --card:#121520; --text:#f5f7fb; --muted:#a7b0c0; --primary:#e11d48; --accent:#22d3ee; --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.35);
+      --grad1: radial-gradient(1200px 500px at 50% 0%, rgba(239,43,90,.12), rgba(34,211,238,.06) 50%, transparent 70%);
+    }
+    [data-theme="light"]{
+      --bg:#f6f7fb; --surface:#ffffff; --card:#ffffff; --text:#0b0c10; --muted:#4b5565; --primary:#e11d48; --accent:#0891b2; --shadow:0 10px 30px rgba(0,0,0,.1);
+      --grad1: radial-gradient(1000px 420px at 50% -10%, rgba(239,43,90,.18), rgba(8,145,178,.08) 55%, transparent 70%);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,"Noto Kufi Arabic",Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    .container{width:min(1200px,92%);margin-inline:auto}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 1.15rem;border-radius:14px;border:1px solid transparent;cursor:pointer;font-weight:700;letter-spacing:.2px;transition:.25s}
+    .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+    .btn-ghost{background:transparent;border:1px solid #2a2f3a;color:var(--text)}
     .btn:hover{transform:translateY(-2px) scale(1.01)}
-    header.hero{position:relative;min-height:72vh;display:grid;place-items:center;text-align:center;background:radial-gradient(1200px 500px at 50% 0%, rgba(230,57,70,.15), transparent)}
-    .hero .content{position:relative;z-index:2;padding:0 1rem}
-    .hero h1{font-size:clamp(32px,5vw,64px);line-height:1.1;margin:0 0 1rem}
-    .hero p{color:var(--muted);max-width:55ch;margin:0 auto 1.2rem}
-    .cta{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
-    section{padding:70px 0}
-    .section-title{text-align:center;font-size:clamp(24px,3vw,36px);margin:0 0 18px}
-    .section-sub{text-align:center;color:var(--muted);margin-bottom:34px}
-    .grid{display:grid;gap:18px} .grid.portfolio{grid-template-columns:repeat(12,1fr)}
-    .tile{position:relative;border-radius:18px;overflow:hidden;background:#000;min-height:220px;box-shadow:var(--shadow);cursor:pointer}
-    .tile img{width:100%;height:100%;object-fit:cover;display:block;background:#000}
-    .tile .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,.15));opacity:0;transition:.35s}
-    .tile:hover .overlay{opacity:1}
-    .tile .meta{position:absolute;inset-inline:14px;bottom:12px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .badge{font-size:12px;padding:.38rem .6rem;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25)}
-    .col-6{grid-column:span 6} .col-8{grid-column:span 8} .col-4{grid-column:span 4} .col-12{grid-column:span 12}
-    .services,.offers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:22px;box-shadow:var(--shadow);transition:.25s}
-    .card:hover{transform:translateY(-4px)} .card p{margin:0;color:var(--muted)}
-    .offer{background:linear-gradient(135deg,rgba(230,57,70,.1),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px;backdrop-filter:blur(6px)}
-    .offer .price{font-size:28px;font-weight:800;margin:6px 0 12px}
-    .contact{display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
-    form{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
-    .field{display:grid;gap:6px;margin-bottom:12px}
-    .field input,.field textarea,.field select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:var(--text)}
-    [data-theme="light"] .field input,[data-theme="light"] .field textarea,[data-theme="light"] .field select{background:#fff;border-color:#ddd;color:#111}
-    footer{padding:28px 0;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,.08)}
-    .filters{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
-    .chip{padding:.5rem .9rem;border-radius:999px;border:1px solid #555;cursor:pointer;font-size:.9rem;transition:.2س}
-    .chip.active,.chip:hover{background:var(--primary);color:#fff;border-color:transparent}
-    .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
-    .modal.open{display:flex}
-    .modal .box{width:min(1000px,95%);background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
-    .modal header{display:flex;gap:10px;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .modal header h4{margin:0;font-size:18px;flex:1}
-    .modal .content{padding:0;display:grid}
-    .responsive-video{position:relative;width:100%;padding-top:56.25%;background:#000}
-    .responsive-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-    .reveal{transform:translateY(14px);opacity:0;transition:.6s ease} .reveal.visible{transform:none;opacity:1}
-    @media (max-width:900px){.services,.offers{grid-template-columns:1fr 1fr}.contact{grid-template-columns:1fr}.col-8,.col-6,.col-4{grid-column:span 12}}
-    @media (max-width:600px){.services,.offers{grid-template-columns:1fr}.hero p{font-size:.98rem}}
-  </style>
+    .toolbar{position:fixed; inset-inline:16px 16px; top:16px; display:flex; gap:10px; z-index:60; justify-content:space-between; align-items:center}
+    .toolbar .left, .toolbar .right{display:flex; gap:10px; align-items:center}
+    .switch{background:var(--surface); border:1px solid #2a2f3a; padding:8px 12px; border-radius:999px}header.hero{position:relative;min-height:82vh;display:grid;place-items:center;text-align:center;background:var(--grad1)} .hero .content{position:relative;z-index:2;padding:0 1rem} .hero h1{font-size:clamp(34px,5.6vw,70px);line-height:1.08;margin:0 0 1rem} .hero p{color:var(--muted);max-width:60ch;margin:0 auto 1.2rem} .cta{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap} .spark{position:absolute; inset:0; pointer-events:none; filter:blur(40px); opacity:.6}
+
+section{padding:84px 0} .section-title{text-align:center;font-size:clamp(24px,3vw,38px);margin:0 0 12px} .section-sub{text-align:center;color:var(--muted);margin-bottom:26px}
+
+.grid{display:grid;gap:18px} .grid.portfolio{grid-template-columns:repeat(12,1fr)} .tile{position:relative;border-radius:var(--radius);overflow:hidden;background:#000;min-height:230px;box-shadow:var(--shadow);cursor:pointer;transition:transform .35s ease, box-shadow .35s ease} .tile:hover{transform:translateY(-6px) scale(1.01)} .tile img{width:100%;height:100%;object-fit:cover;display:block;background:#000} .tile .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,.15));opacity:0;transition:.35s} .tile:hover .overlay{opacity:1} .tile .meta{position:absolute;inset-inline:14px;bottom:12px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px} .badge{font-size:12px;padding:.38rem .6rem;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25)} .col-6{grid-column:span 6} .col-8{grid-column:span 8} .col-4{grid-column:span 4} .col-12{grid-column:span 12}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px} .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);transition:.25s} .card:hover{transform:translateY(-4px)} .card p{margin:0;color:var(--muted)}
+
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px} .plan{background:linear-gradient(135deg,rgba(230,29,72,.12),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:24px} .plan .price{font-size:32px;font-weight:800;margin:10px 0 14px} .plan ul{margin:0; padding:0 18px; color:var(--muted)}
+
+.calc{display:grid;grid-template-columns:1fr 1fr; gap:16px} .field{display:grid;gap:6px;margin-bottom:8px} .field input,.field textarea,.field select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #2a2f3a;background:#0f1117;color:var(--text)} [data-theme="light"] .field input,[data-theme="light"] .field textarea,[data-theme="light"] .field select{background:#fff;border-color:#ddd;color:#111}
+
+.faq{display:grid; gap:12px} details{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:14px} details[open]{border-color:rgba(255,255,255,.18)} summary{cursor:pointer; font-weight:700} summary::-webkit-details-marker{display:none}
+
+footer{padding:32px 0;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,.08)}
+
+.reveal{transform:translateY(16px) scale(.98);opacity:0;transition:.7s cubic-bezier(.2,.8,.2,1)} .reveal.visible{transform:none;opacity:1}
+
+@media (max-width:980px){ .cards,.pricing{grid-template-columns:1fr 1fr} .calc{grid-template-columns:1fr} } @media (max-width:700px){ .grid.portfolio{grid-template-columns:repeat(6,1fr)} .col-8,.col-6,.col-4{grid-column:span 6} .cards,.pricing{grid-template-columns:1fr} .hero p{font-size:1rem} }
+
+.magnet{position:relative; overflow:hidden} .magnet span{position:relative; z-index:2} .magnet::after{content:""; position:absolute; inset:auto; width:0; height:0; border-radius:999px; background:rgba(255,255,255,.12); transform:translate(-50%,-50%); pointer-events:none; transition:width .25s,height .25s} .magnet.active::after{width:160px; height:160px}
+
+.progress{position:fixed; inset-inline:0; top:0; height:3px; background:linear-gradient(90deg,var(--primary),var(--accent)); transform-origin:0 0; transform:scaleX(0); z-index:80} .toast{position:fixed; bottom:18px; inset-inline:18px; display:flex; justify-content:center; z-index:90} .toast .box{background:var(--surface); border:1px solid rgba(255,255,255,.08); padding:12px 16px; border-radius:12px; box-shadow:var(--shadow)} </style>
+
 </head>
 <body>
-  <div class="container" style="position:fixed; left:16px; top:16px; z-index:60">
-    <button id="themeToggle" class="btn btn-outline" aria-label="تبديل المظهر">🌙 / ☀️</button>
-  </div>
-
-  <header class="hero">
+  <div class="progress" id="progress"></div>  <div class="toolbar container">
+    <div class="left">
+      <button id="themeToggle" class="btn btn-ghost magnet" aria-label="تبديل المظهر"><span>🌙/☀️</span></button>
+      <button id="langToggle" class="btn btn-ghost magnet" aria-label="Switch Language"><span>AR/EN</span></button>
+    </div>
+    <div class="right switch">
+      <input id="search" type="search" placeholder="ابحث في الأعمال…" style="background:transparent;border:0;outline:none;color:var(--text)">
+    </div>
+  </div>  <header class="hero">
     <div class="content">
-      <h1 class="reveal">نحوّل لحظاتك إلى فيلم لا يُنسى</h1>
-      <p class="reveal" style="transition-delay:.08s">بورتفوليو مصور فيديوغرافي — مودرن، ديناميكي، ومليان أنيميشن.</p>
+      <h1 class="reveal" data-en="We turn your moments into a film">نحوّل لحظاتك إلى فيلم لا يُنسى</h1>
+      <p class="reveal" style="transition-delay:.08s" data-en="A modern, animated videography portfolio">بورتفوليو مصور فيديوغرافي — مودرن، ديناميكي، ومليان أنيميشن.</p>
       <div class="cta reveal" style="transition-delay:.12s">
-        <a href="#portfolio" class="btn btn-primary">شاهد الأعمال</a>
-        <a href="#contact" class="btn btn-outline">اطلب عرض سعر</a>
+        <a href="#portfolio" class="btn btn-primary magnet"><span>شاهد الأعمال</span></a>
+        <button class="btn btn-ghost magnet" id="openCalc"><span>اطلب عرض سعر فوري</span></button>
       </div>
     </div>
-  </header>
-
-  <section id="portfolio" class="container">
+    <canvas id="spark" class="spark" aria-hidden="true"></canvas>
+  </header>  <section id="portfolio" class="container">
     <h2 class="section-title reveal">أعمال مختارة</h2>
-    <p class="section-sub reveal">فلتر حسب نوع المشروع</p>
+    <p class="section-sub reveal">فلتر حسب النوع أو استخدم البحث بالأعلى</p><div class="reveal" style="margin-bottom:14px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap" id="filters">
+  <button class="btn btn-ghost magnet chip active" data-filter="all"><span>الكل</span></button>
+  <button class="btn btn-ghost magnet chip" data-filter="wedding"><span>أفراح</span></button>
+  <button class="btn btn-ghost magnet chip" data-filter="commercial"><span>إعلانات</span></button>
+  <button class="btn btn-ghost magnet chip" data-filter="event"><span>فعاليات</span></button>
+  <button class="btn btn-ghost magnet chip" data-filter="social"><span>سوشيال</span></button>
+</div>
 
-    <div class="filters reveal" id="filters">
-      <button class="chip active" data-filter="all">الكل</button>
-      <button class="chip" data-filter="wedding">أفراح</button>
-      <button class="chip" data-filter="commercial">إعلانات</button>
-      <button class="chip" data-filter="event">فعاليات</button>
-      <button class="chip" data-filter="social">سوشيال</button>
-    </div>
-
-    <div class="grid portfolio">
-      <!-- YouTube -->
-      <article class="tile col-8 reveal" data-cat="commercial" data-title="إعلان عطور — Noir"
-               data-link="https://youtu.be/LeFb5SOypzo?si=RVkGNmEMpJUn4rMZ">
-        <img alt="Commercial Ad" />
-        <div class="overlay"></div>
-        <div class="meta"><span>إعلان براند</span><span class="badge">60 ثانية</span></div>
-      </article>
-
-      <!-- Facebook (نفس الرابط) -->
-      <article class="tile col-4 reveal" data-cat="wedding" data-title="Wedding — Sara & Ali"
-               data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
-        <img alt="Wedding Film" />
-        <div class="overlay"></div>
-        <div class="meta"><span>فيلم زفاف</span><span class="badge">3 دقائق</span></div>
-      </article>
-
-      <article class="tile col-6 reveal" data-cat="event" data-title="Tech Summit 2025"
-               data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
-        <img alt="Event Coverage" />
-        <div class="overlay"></div>
-        <div class="meta"><span>تغطية حدث</span><span class="badge">هايلايت</span></div>
-      </article>
-
-      <article class="tile col-6 reveal" data-cat="social" data-title="Reels Pack for Brand X"
-               data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
-        <img alt="Social Media Reels" />
-        <div class="overlay"></div>
-        <div class="meta"><span>ريلز سوشيال</span><span class="badge">9×16</span></div>
-      </article>
-
-      <!-- Instagram -->
-      <article class="tile col-6 reveal" data-cat="social" data-title="Instagram Reel"
-               data-link="https://www.instagram.com/reel/DDCeFbToalV/?igsh=MWU0bzZ5MTZveWY0cA==">
-        <img alt="Instagram Reel" />
-        <div class="overlay"></div>
-        <div class="meta"><span>Instagram Reel</span><span class="badge">قصير</span></div>
-      </article>
-
-      <!-- Google Drive -->
+<div class="grid portfolio" id="grid">
+  <article class="tile col-8 reveal" data-cat="commercial" data-title="إعلان عطور — Noir" data-duration="60s" data-link="https://youtu.be/LeFb5SOypzo?si=RVkGNmEMpJUn4rMZ">
+    <img alt="Commercial Ad"/>
+    <div class="overlay"></div>
+    <div class="meta"><span>إعلان براند</span><span class="badge">60 ثانية</span></div>
+  </article>
+  <article class="tile col-4 reveal" data-cat="wedding" data-title="Wedding — Sara & Ali" data-duration="3m" data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
+    <img alt="Wedding Film"/>
+    <div class="overlay"></div>
+    <div class="meta"><span>فيلم زفاف</span><span class="badge">3 دقائق</span></div>
+  </article>
+  <article class="tile col-6 reveal" data-cat="event" data-title="Tech Summit 2025" data-duration="HL" data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
+    <img alt="Event Coverage"/>
+    <div class="overlay"></div>
+    <div class="meta"><span>تغطية حدث</span><span class="badge">هايلايت</span></div>
+  </article>
+  <article class="tile col-6 reveal" data-cat="social" data-title="Reels Pack for Brand X" data-duration="9x16" data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
+    <img alt="Social Media Reels"/>
+    <div class="overlay"></div>
+    <div class="meta"><span>ريلز سوشيال</span><span class="badge">9×16</span></div>
+  </article>
+  <article class="tile col-6 reveal" data-cat="social" data-title="Instagram Reel" data-duration="short" data-link="https://www.instagram.com/reel/DDCeFbToalV/?igsh=MWU0bzZ5MTZveWY0cA==">
+    <img alt="Instagram Reel"/>
+    <div class="overlay"></div>
+    <div class="meta"><span>Instagram Reel</span><span class="badge">قصير</span></div>
+  </article>
   <article class="tile col-12 reveal" data-cat="commercial" data-title="Google Drive Video" data-duration="prev" data-link="https://drive.google.com/file/d/1ydYdWj2P9zw0vob8F4-HZi4HQPNmsg-A/view?usp=drivesdk">
     <img alt="Google Drive Video"/>
     <div class="overlay"></div>
     <div class="meta"><span>Google Drive</span><span class="badge">Preview</span></div>
   </article>
-    </div>
-  </section>
+</div>
 
-  <section id="services" class="container">
+  </section>  <section id="services" class="container">
     <h2 class="section-title reveal">الخدمات</h2>
     <p class="section-sub reveal">حلول كاملة من التخطيط للتسليم</p>
-    <div class="services">
+    <div class="cards">
       <div class="card reveal"><h3>Wedding Films</h3><p>تغطية سينمائية مع مونتاج عاطفي.</p></div>
       <div class="card reveal" style="transition-delay:.06s"><h3>Commercial Ads</h3><p>إعلانات سريعة التأثير للسوشيال.</p></div>
       <div class="card reveal" style="transition-delay:.12s"><h3>Event Coverage</h3><p>توثيق احترافي للفعاليات.</p></div>
     </div>
-  </section>
-
-  <section id="contact" class="container">
-    <h2 class="section-title reveal">تواصل</h2>
-    <p class="section-sub reveal">هنرجع لك في أقل من 24 ساعة</p>
-    <div class="contact">
-      <form id="contactForm" class="reveal">
-        <div class="field"><label>الاسم</label><input type="text" name="name" required placeholder="اكتب اسمك هنا" /></div>
-        <div class="field"><label>البريد الإلكتروني</label><input type="email" name="email" required placeholder="you@example.com" /></div>
-        <div class="field"><label>نوع الخدمة</label>
-          <select name="service"><option value="wedding">Wedding</option><option value="commercial">Commercial</option><option value="event">Event</option><option value="social">Social</option></select>
-        </div>
-        <div class="field"><label>الرسالة</label><textarea name="message" rows="4" placeholder="احكي لنا عن مشروعك"></textarea></div>
-        <button class="btn btn-primary" type="submit">إرسال</button>
-      </form>
-      <div class="card reveal" style="height:max-content">
-        <h3>طرق التواصل السريع</h3>
-        <p style="margin-top:6px">واتساب: <a href="#">+2012 345 6789</a></p>
-        <p>إنستجرام: <a href="#">@yourbrand.films</a></p>
-        <p>إيميل: <a href="mailto:hello@yourbrand.com">hello@yourbrand.com</a></p>
-        <p style="color:var(--muted); margin-top:12px">العنوان: القاهرة، مصر</p>
+  </section>  <section id="pricing" class="container">
+    <h2 class="section-title reveal">باقات وأسعار مبدئية</h2>
+    <p class="section-sub reveal">الأسعار تتغير حسب المدة والموقع وعدد أفراد الطاقم</p>
+    <div class="pricing">
+      <div class="plan reveal">
+        <h3>Social Starter</h3>
+        <div class="price">EGP 4,500</div>
+        <ul>
+          <li>فيديو قصير 30-60 ثانية</li>
+          <li>تصحيح ألوان أساسي</li>
+          <li>تسليم خلال 48 ساعة</li>
+        </ul>
+      </div>
+      <div class="plan reveal" style="transition-delay:.06s">
+        <h3>Event Highlights</h3>
+        <div class="price">EGP 9,500</div>
+        <ul>
+          <li>تغطية حتى 6 ساعات</li>
+          <li>مصور + مساعد</li>
+          <li>فيديو هايلايت 1-2 دقيقة</li>
+        </ul>
+      </div>
+      <div class="plan reveal" style="transition-delay:.12s">
+        <h3>Wedding Premium</h3>
+        <div class="price">EGP 18,000</div>
+        <ul>
+          <li>طاقم 2-3 أفراد</li>
+          <li>فيلم 3-5 دقائق + تيزر</li>
+          <li>تصحيح ألوان احترافي</li>
+        </ul>
       </div>
     </div>
-  </section>
-
-  <footer>© 2025 جميع الحقوق محفوظة — YourBrand Films</footer>
-
-  <div class="modal" id="modal">
-    <div class="box">
-      <header>
-        <h4 id="modalTitle">عنوان العمل</h4>
-        <a id="modalOpenLink" class="btn btn-primary" href="#" target="_blank" rel="noopener">فتح الفيديو</a>
-        <button id="modalClose" class="btn btn-outline">إغلاق</button>
-      </header>
-      <div class="content" id="modalContent"></div>
+  </section>  <section id="faq" class="container">
+    <h2 class="section-title reveal">أسئلة شائعة</h2>
+    <div class="faq">
+      <details class="reveal"><summary>هل أستطيع الحجز أونلاين؟</summary><p>نعم، تواصل معنا واترك تفاصيل الموعد وسيتم التأكيد خلال 24 ساعة.</p></details>
+      <details class="reveal"><summary>هل يمكن تسليم ملفات خام؟</summary><p>يمكن حسب الباقة والاتفاق.</p></details>
     </div>
-  </div>
+  </section>  <footer class="container">© جميع الحقوق محفوظة</footer>  <div id="playerModal" style="position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(2px)">
+    <div style="width:min(1100px,92%);aspect-ratio:16/9;background:#000;border-radius:18px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.15);box-shadow:0 20px 60px rgba(0,0,0,.6)">
+      <button id="closeModal" class="btn btn-ghost" style="position:absolute;top:10px;inset-inline-end:10px;z-index:2">✕</button>
+      <iframe id="playerFrame" allow="autoplay; encrypted-media; fullscreen" allowfullscreen style="width:100%;height:100%;border:0"></iframe>
+    </div>
+  </div>  <div class="toast" id="toast" style="display:none"><div class="box"></div></div>  <script>
+  const qs = (s, p=document) => p.querySelector(s);
+  const qsa = (s, p=document) => [...p.querySelectorAll(s)];
+  const setToast = (msg,dur=2200)=>{const t=qs('#toast');t.style.display='flex';t.querySelector('.box').textContent=msg;setTimeout(()=>t.style.display='none',dur)}
 
-  <script>
-    // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme) document.documentElement.setAttribute('data-theme', storedTheme);
-    themeToggle.addEventListener('click', () => {
-      const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next);
+  const progress = qs('#progress');
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const ratio = Math.max(0, Math.min(1, scrollY / max));
+    progress.style.transform = `scaleX(${ratio})`;
+  };
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  },{threshold:.12});
+  qsa('.reveal').forEach(el=>io.observe(el));
+
+  qsa('.magnet').forEach(btn=>{
+    btn.addEventListener('mousemove', e=>{
+      const r = btn.getBoundingClientRect();
+      btn.classList.add('active');
+      btn.style.setProperty('--x', (e.clientX - r.left)+'px');
+      btn.style.setProperty('--y', (e.clientY - r.top)+'px');
     });
+    btn.addEventListener('mouseleave',()=> btn.classList.remove('active'));
+  });
 
-    // Reveal
-    const io = new IntersectionObserver((ents)=>ents.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.15});
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  (function spark(){
+    const c = qs('#spark'); if(!c) return; const ctx = c.getContext('2d');
+    let w,h; const DPR = devicePixelRatio || 1;
+    function resize(){ w = c.offsetWidth; h = c.offsetHeight; c.width = w*DPR; c.height = h*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);} resize(); addEventListener('resize', resize);
+    const stars = Array.from({length:80},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+0.5,a:Math.random()*1}));
+    function draw(){ ctx.clearRect(0,0,w,h); for(const s of stars){ s.a += 0.02; const glow = (Math.sin(s.a)+1)/2; ctx.beginPath(); ctx.fillStyle = `rgba(255,255,255,${0.15+glow*0.5})`; ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill(); } requestAnimationFrame(draw);} draw();
+  })();
 
-    // ===== Helpers =====
-    const getYouTubeId = (url) => (url.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([\w-]{6,})/i) || [])[1] || null;
-    const getVimeoId  = (url) => (url.match(/vimeo\.com\/(?:video\/)?(\d+)/i) || [])[1] || null;
-    const isInstagram = (url) => /instagram\.com\/(reel|p)\//i.test(url);
-    const isFacebook  = (url) => /facebook\.com/i.test(url);
-    const isDrive     = (url) => /drive\.google\.com\/file\/d\/([^/]+)/.test(url);
-    const driveId     = (url) => (url.match(/drive\.google\.com\/file\/d\/([^/]+)/)||[])[1];
+  const root = document.documentElement;
+  const themeToggle = qs('#themeToggle');
+  const savedTheme = localStorage.getItem('theme'); if(savedTheme){ root.setAttribute('data-theme', savedTheme) }
+  themeToggle?.addEventListener('click',()=>{
+    const cur = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', cur); localStorage.setItem('theme', cur);
+  });
 
-    // Placeholders (SVG)
-    const svgThumb = (label, color='#ffffff') => {
-      const svg = `
-        <svg xmlns='http://www.w3.org/2000/svg' width='1280' height='720'>
-          <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#0b0b0b'/><stop offset='100%' stop-color='#1a1a1a'/></linearGradient></defs>
-          <rect width='100%' height='100%' fill='url(#g)'/>
-          <circle cx='640' cy='360' r='70' fill='rgba(255,255,255,0.12)'/>
-          <polygon points='620,320 720,360 620,400' fill='#fff'/>
-          <text x='50%' y='92%' font-size='48' fill='${color}' font-family='sans-serif' text-anchor='middle' opacity='0.9'>${label}</text>
-        </svg>`;
-      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    };
+  const langBtn = qs('#langToggle');
+  let isEN = false;
+  langBtn?.addEventListener('click',()=>{
+    isEN = !isEN; document.documentElement.lang = isEN ? 'en' : 'ar';
+    qsa('[data-en]').forEach(el=>{ const en = el.getAttribute('data-en'); if(isEN && en) el.textContent = en; });
+    setToast(isEN ? 'Language: English' : 'تم التبديل إلى العربية');
+  });
 
-    // Auto thumbnails
-    async function applyAutoThumbnails() {
-      const tiles = [...document.querySelectorAll('.tile')];
-      await Promise.all(tiles.map(async (t) => {
-        const img = t.querySelector('img'); if (!img) return;
-        const link = t.dataset.link || '';
-        const manualPoster = t.dataset.poster;
+  const chips = qsa('#filters .chip');
+  const tiles = qsa('#grid .tile');
+  let activeFilter = 'all';
+  chips.forEach(ch=>ch.addEventListener('click',()=>{
+    chips.forEach(x=>x.classList.remove('active')); ch.classList.add('active');
+    activeFilter = ch.dataset.filter; filterGrid();
+  }));
+  const search = qs('#search');
+  search?.addEventListener('input', filterGrid);
+  function filterGrid(){
+    const q = (search?.value||'').toLowerCase();
+    tiles.forEach(t=>{
+      const matchCat = activeFilter==='all' || t.dataset.cat===activeFilter;
+      const matchTxt = (t.dataset.title||'').toLowerCase().includes(q);
+      t.style.display = (matchCat && matchTxt) ? '' : 'none';
+    });
+  }
 
-        if (manualPoster) { img.src = manualPoster; return; }
-
-        if (/youtu\.be|youtube\.com/i.test(link)) {
-          const id = getYouTubeId(link); if (id) { img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; return; }
-        }
-        if (/vimeo\.com/i.test(link)) {
-          try {
-            const res = await fetch(`https://vimeo.com/api/oembed.json?url=${encodeURIComponent(link)}`);
-            if (res.ok) {
-              const data = await res.json();
-              if (data.thumbnail_url) { img.src = data.thumbnail_url.replace(/_\d+x\d+/, '_1280x720'); return; }
-            }
-          } catch(e){}
-        }
-        if (isInstagram(link))  { img.src = svgThumb('Instagram Reel', '#E1306C'); return; }
-        if (isFacebook(link))   { img.src = svgThumb('Facebook Video',  '#1877F2'); return; }
-
-        // ✅ Google Drive thumbnail الرسمي (لو الملف Public)
-        if (isDrive(link)) {
-          const id = driveId(link);
-          img.src = `https://drive.google.com/thumbnail?id=${id}&sz=w1280`;
-          img.onerror = () => { img.src = svgThumb('Google Drive', '#22c55e'); };
-          return;
-        }
-
-        if (!img.src) img.src = svgThumb('Video');
-      }));
+  function driveId(url){ const m = url.match(/\/file\/d\/([\w-]+)/); return m?m[1]:null; }
+  function ytId(url){ const m = url.match(/[?&]v=([\w-]{11})/) || url.match(/youtu\.be\/([\w-]{11})/); return m?m[1]:null; }
+  function provider(url){
+    if(/youtube\.com|youtu\.be/.test(url)) return 'youtube';
+    if(/instagram\.com\/(reel|p)\//.test(url)) return 'instagram';
+    if(/facebook\.com\/.+\/videos\//.test(url)) return 'facebook';
+    if(/vimeo\.com\//.test(url)) return 'vimeo';
+    if(/drive\.google\.com\/file\/d\//.test(url)) return 'gdrive';
+    return 'other';
+  }
+  async function fetchThumb(url){
+    const prov = provider(url);
+    try{
+      if(prov==='gdrive'){
+        const id = driveId(url); return id?`https://drive.google.com/thumbnail?id=${id}&sz=w1200`:null;
+      }
+      if(prov==='youtube'){
+        const id = ytId(url); return id?`https://img.youtube.com/vi/${id}/hqdefault.jpg`:null;
+      }
+      const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
+      if(res.ok){ const data = await res.json(); return data.thumbnail_url || null; }
+    }catch(e){ console.warn('thumb error', e); }
+    return null;
+  }
+  async function hydrateTiles(){
+    for(const t of tiles){
+      const url = t.dataset.link; const img = t.querySelector('img');
+      img.alt = t.dataset.title||'preview';
+      const th = await fetchThumb(url);
+      if(th){ img.src = th; }
+      else { img.style.background = 'linear-gradient(135deg,#1f2937,#0f172a)'; }
     }
+  }
+  hydrateTiles();
 
-    // Build embed URL (مع حل خاص لجوجل درايف)
-    const buildEmbed = (link) => {
-      if (!link) return null;
+  const modal = qs('#playerModal'); const frame = qs('#playerFrame');
+  function openPlayer(url){
+    const prov = provider(url); let src = '';
+    if(prov==='youtube'){
+      const id = ytId(url); src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;}
+    else if(prov==='instagram'){
+      const id = (url.split('/reel/')[1]||'').split('/')[0] || (url.split('/p/')[1]||'').split('/')[0];
+      src = `https://www.instagram.com/embed/reel/${id}?autoplay=1&muted=1`; }
+    else if(prov==='facebook'){
+      src = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0&autoplay=1&mute=1`; }
+    else if(prov==='vimeo'){
+      const id = url.split('/').pop(); src = `https://player.vimeo.com/video/${id}?autoplay=1&muted=1`; }
+    else if(prov==='gdrive'){
+      const id = driveId(url); src = `https://drive.google.com/file/d/${id}/preview`; }
+    else { src = url; }
+    frame.src = src; modal.style.display='flex';
+  }
+  qsa('#grid .tile').forEach(t=>t.addEventListener('click',()=>openPlayer(t.dataset.link)));
+  qs('#closeModal')?.addEventListener('click',()=>{ frame.src=''; modal.style.display='none'; });
+  modal?.addEventListener('click',(e)=>{ if(e.target===modal){ frame.src=''; modal.style.display='none'; }});
 
-      if (/youtu\.be|youtube\.com/i.test(link)) {
-        const id = getYouTubeId(link);
-        if (id) return { kind:'iframe', src:`https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&rel=0` };
-      }
-      if (/vimeo\.com/i.test(link)) {
-        const id = getVimeoId(link);
-        if (id) return { kind:'iframe', src:`https://player.vimeo.com/video/${id}?autoplay=1&muted=1` };
-      }
-      if (isInstagram(link)) {
-        return { kind:'iframe', src:`${link.replace(/\/$/,'')}/embed` };
-      }
-      if (isFacebook(link)) {
-        return { kind:'iframe', src:`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(link)}&show_text=false&autoplay=1&mute=1&allowfullscreen=true` };
-      }
-      if (isDrive(link)) {
-        const id = driveId(link);
-        // أولاً نحاول تشغيله كـ <video> مباشر (غالبًا بيشتغل ويقبل autoplay لما يكون muted)
-        return { kind:'drive', id };
-      }
-      if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(link)) return { kind:'video', src: link };
-      return null;
-    };
-
-    // Filter
-    const tiles = [...document.querySelectorAll('.tile')];
-    const filterBtns = document.querySelectorAll('#filters .chip');
-    filterBtns.forEach(btn => btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
-      const f = btn.dataset.filter; tiles.forEach(t => t.style.display = (f==='all'||t.dataset.cat===f)?'':'none');
-    }));
-
-    // Modal open
-    const modal = document.getElementById('modal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-    const modalOpenLink = document.getElementById('modalOpenLink');
-    const close = () => modal.classList.remove('open');
-    document.getElementById('modalClose').addEventListener('click', close);
-    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
-
-    tiles.forEach(t => t.addEventListener('click', () => {
-      modalTitle.textContent = t.dataset.title || 'Project';
-      modalContent.innerHTML = '';
-      const link = t.dataset.link;
-      const emb = buildEmbed(link);
-
-      const showIframe = (src) => {
-        const wrap = document.createElement('div'); wrap.className = 'responsive-video';
-        const iframe = document.createElement('iframe');
-        iframe.src = src;
-        iframe.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
-        iframe.setAttribute('allowfullscreen','true');
-        wrap.appendChild(iframe); modalContent.appendChild(wrap);
-      };
-
-      if (emb && emb.kind === 'iframe') {
-        showIframe(emb.src);
-      } else if (emb && emb.kind === 'video') {
-        const v = document.createElement('video'); v.src = emb.src; v.controls = true; v.autoplay = true; v.muted = true; v.playsInline = true; v.style.width='100%';
-        modalContent.appendChild(v);
-      } else if (emb && emb.kind === 'drive') {
-        // ✅ جرّب تشغيل مباشر من uc?export=download
-        const v = document.createElement('video');
-        v.src = `https://drive.google.com/uc?export=download&id=${emb.id}`;
-        v.controls = true; v.autoplay = true; v.muted = true; v.playsInline = true; v.style.width='100%';
-        v.onerror = () => {
-          // fallback لِـ preview لو ممنوع
-          modalContent.innerHTML = '';
-          showIframe(`https://drive.google.com/file/d/${emb.id}/preview?autoplay=1&mute=1`);
-        };
-        modalContent.appendChild(v);
-      } else {
-        const img = new Image(); img.src = svgThumb('Video'); img.alt = 'Video'; img.style.width='100%';
-        modalContent.appendChild(img);
-      }
-
-      modalOpenLink.style.display = link ? '' : 'none';
-      modalOpenLink.href = link || '#';
-      modal.classList.add('open');
-    }));
-
-    // Contact form demo
-    document.getElementById('contactForm').addEventListener('submit',(e)=>{
-      e.preventDefault(); const data = Object.fromEntries(new FormData(e.target).entries());
-      alert('تم استلام رسالتك!\n\n' + JSON.stringify(data, null, 2)); e.target.reset();
-    });
-
-    applyAutoThumbnails();
-  </script>
-</body>
+  qs('#openCalc')?.addEventListener('click',()=>{
+    const base = 2500;
+    const type = prompt('نوع الطلب؟ (wedding/commercial/event/social)','commercial')||'commercial';
+    const hours = parseInt(prompt('عدد ساعات التصوير؟','4')||'4',10);
+    const crew = parseInt(prompt('عدد أفراد الطاقم؟','1')||'1',10);
+    const multiplier = {wedding:1.4, commercial:1.6, event:1.2, social:1.1}[type]||1.3;
+    const total = Math.round(base*multiplier + hours*600 + (crew-1)*500);
+    setToast(`تقدير سريع: EGP ${total.toLocaleString('en-US')}`);
+  });
+  </script></body>
 </html>
