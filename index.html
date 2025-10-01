@@ -23,30 +23,28 @@
     a{text-decoration:none;color:inherit}
     .container{width:min(1200px,92%);margin-inline:auto}
 
-    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1rem;border-radius:14px;border:1px solid transparent;cursor:pointer;font-weight:700;transition:.2s}
-    .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
-    .btn-ghost{background:transparent;border:1px solid #2a2f3a;color:var(--text)}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1rem;border-radius:14px;border:1px solid #2a2f3a;background:transparent;color:var(--text);cursor:pointer;font-weight:700;transition:transform .18s, box-shadow .18s}
+    .btn-primary{background:var(--primary);border-color:transparent;color:#fff;box-shadow:var(--shadow)}
     .btn:hover{transform:translateY(-2px)}
 
-    /* ===== الشريط العلوي ثابت + داخل الشاشة دايمًا ===== */
+    /* الشريط العلوي ثابت */
     .toolbar{
-      position:fixed; top:0; left:0; right:0; z-index:120;
+      position:fixed; top:0; left:0; right:0; z-index:200;
       display:flex; justify-content:space-between; align-items:center; gap:10px;
       padding: max(10px, calc(env(safe-area-inset-top,0) + 8px))
                clamp(12px,4vw,24px);
       background:color-mix(in oklab, var(--bg) 86%, transparent);
       backdrop-filter:blur(8px);
       border-bottom:1px solid rgba(255,255,255,.08);
-      box-sizing:border-box;
     }
-    .toolbar .left, .toolbar .right{display:flex; gap:10px; align-items:center; min-width:0}
-    .switch{background:var(--surface); border:1px solid #2a2f3a; padding:8px 12px; border-radius:999px; display:flex; align-items:center}
-    #search{min-width:0; width: clamp(140px, 40vw, 320px); background:transparent; border:0; outline:none; color:var(--text)}
+    .toolbar .left, .toolbar .right{display:flex; gap:10px; align-items:center}
+    .switch{background:var(--surface); border:1px solid #2a2f3a; padding:8px 12px; border-radius:999px}
+    #search{width: clamp(150px, 44vw, 340px); background:transparent; border:0; outline:none; color:var(--text)}
     .toolbar-spacer{height:64px}
 
-    header.hero{position:relative;min-height:82vh;display:grid;place-items:center;text-align:center;background:var(--grad1)}
+    header.hero{position:relative;min-height:78vh;display:grid;place-items:center;text-align:center;background:var(--grad1)}
     .hero .content{position:relative;z-index:2;padding:0 1rem}
-    .hero h1{font-size:clamp(32px,5.6vw,68px);line-height:1.08;margin:0 0 1rem}
+    .hero h1{font-size:clamp(30px,5.4vw,66px);line-height:1.08;margin:0 0 1rem}
     .hero p{color:var(--muted);max-width:60ch;margin:0 auto 1.2rem}
     .cta{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
     .spark{position:absolute; inset:0; pointer-events:none; filter:blur(40px); opacity:.6}
@@ -55,17 +53,22 @@
     .section-title{text-align:center;font-size:clamp(22px,3vw,36px);margin:0 0 10px}
     .section-sub{text-align:center;color:var(--muted);margin-bottom:18px}
 
-    /* ===== جريد موحّد 16:9 ===== */
+    /* جريد موحّد 16:9 */
     .grid{display:grid;gap:14px}
     .grid.portfolio{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-    .grid.portfolio > .tile{grid-column:auto !important}
-    .tile{position:relative;border-radius:16px;overflow:hidden;background:#000;aspect-ratio:16/9;box-shadow:var(--shadow);cursor:pointer;transition:transform .25s}
+    .tile{position:relative;border-radius:16px;overflow:hidden;background:#0b0b0b;aspect-ratio:16/9;box-shadow:var(--shadow);cursor:pointer;transition:transform .25s, box-shadow .25s}
     .tile:hover{transform:translateY(-4px)}
     .tile img{width:100%;height:100%;object-fit:cover;display:block;background:#000}
-    .tile .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,.15));opacity:0;transition:.25s}
+    .tile .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,.12));opacity:0;transition:opacity .25s}
     .tile:hover .overlay{opacity:1}
     .tile .meta{position:absolute;inset-inline:10px;bottom:8px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.92rem}
     .badge{font-size:.75rem;padding:.28rem .5rem;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25)}
+    .play{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.3);display:grid;place-items:center}
+    .play::before{content:"▶";color:#fff;transform:translateX(2px)}
+
+    /* Chips */
+    .chip{position:relative}
+    .chip.active{box-shadow:0 6px 18px rgba(225,29,72,.15)}
 
     .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
     .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:18px;box-shadow:var(--shadow);transition:.2s}
@@ -84,15 +87,15 @@
 
     footer{padding:28px 0;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,.08)}
 
-    .reveal{transform:translateY(12px) scale(.99);opacity:0;transition:.6s cubic-bezier(.2,.8,.2,1)}
+    .reveal{transform:translateY(14px) scale(.99);opacity:0;transition:.6s cubic-bezier(.2,.8,.2,1)}
     .reveal.visible{transform:none;opacity:1}
 
-    .progress{position:fixed; inset-inline:0; top:0; height:3px; background:linear-gradient(90deg,var(--primary),var(--accent)); transform-origin:0 0; transform:scaleX(0); z-index:80}
-    .toast{position:fixed; bottom:18px; inset-inline:18px; display:flex; justify-content:center; z-index:200; pointer-events:none}
+    .progress{position:fixed; inset-inline:0; top:0; height:3px; background:linear-gradient(90deg,var(--primary),var(--accent)); transform-origin:0 0; transform:scaleX(0); z-index:190}
+    .toast{position:fixed; bottom:18px; inset-inline:18px; display:flex; justify-content:center; z-index:220; pointer-events:none}
     .toast .box{pointer-events:auto;background:var(--surface); border:1px solid rgba(255,255,255,.08); padding:10px 14px; border-radius:10px}
 
-    /* ==== مودال عرض السعر — Scroll داخل البطاقة ==== */
-    #quoteModal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:150; background:rgba(0,0,0,.5); backdrop-filter:blur(2px); padding:12px}
+    /* مودال عرض السعر */
+    #quoteModal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:300; background:rgba(0,0,0,.5); backdrop-filter:blur(2px); padding:12px}
     .quote-card{width:min(820px,94%); max-height:85vh; overflow:auto; background:var(--surface); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:16px; box-shadow:var(--shadow)}
     .quote-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
     .field{display:grid;gap:6px}
@@ -101,18 +104,16 @@
     .quote-actions{position:sticky; bottom:0; background:linear-gradient(to top, var(--surface), transparent); padding-top:8px; display:flex; gap:8px; justify-content:flex-end; margin-top:8px}
     .quote-result{margin-top:10px; background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:10px}
     @media(max-width:760px){ .quote-grid{grid-template-columns:1fr} }
-
     @media (max-width:480px){ .spark{display:none} }
   </style>
 </head>
 <body>
   <div class="progress" id="progress"></div>
 
-  <!-- الشريط -->
   <div class="toolbar">
     <div class="left">
-      <button id="langToggle" class="btn btn-ghost" aria-label="Switch Language"><span>AR/EN</span></button>
-      <button id="themeToggle" class="btn btn-ghost" aria-label="تبديل المظهر"><span>☀️/🌙</span></button>
+      <button id="langToggle" class="btn" aria-label="Switch Language"><span>AR/EN</span></button>
+      <button id="themeToggle" class="btn" aria-label="تبديل المظهر"><span>☀️/🌙</span></button>
     </div>
     <div class="right switch">
       <input id="search" type="search" placeholder="ابحث في الأعمال…" aria-label="ابحث في الأعمال">
@@ -120,67 +121,59 @@
   </div>
   <div class="toolbar-spacer"></div>
 
-  <!-- هيدر -->
   <header class="hero">
     <div class="content">
       <h1 class="reveal" data-en="We turn your moments into a film">نحوّل لحظاتك إلى فيلم لا يُنسى</h1>
       <p class="reveal" style="transition-delay:.08s" data-en="A modern, animated videography portfolio">بورتفوليو مصور فيديوغرافي — مودرن، ديناميكي، ومليان أنيميشن.</p>
       <div class="cta reveal" style="transition-delay:.12s">
         <a href="#portfolio" class="btn btn-primary"><span data-en="See Work">شاهد الأعمال</span></a>
-        <button class="btn btn-ghost" id="openCalc"><span data-en="Instant Quote">اطلب عرض سعر فوري</span></button>
+        <button class="btn" id="openCalc"><span data-en="Instant Quote">اطلب عرض سعر فوري</span></button>
       </div>
     </div>
     <canvas id="spark" class="spark" aria-hidden="true"></canvas>
   </header>
 
-  <!-- أعمال -->
   <section id="portfolio" class="container">
     <h2 class="section-title reveal" data-en="Selected Work">أعمال مختارة</h2>
     <p class="section-sub reveal" data-en="Filter by type or use the search above">فلتر حسب النوع أو استخدم البحث بالأعلى</p>
 
     <div class="reveal" style="margin-bottom:12px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap" id="filters">
-      <button class="btn btn-ghost chip active" data-filter="all"><span data-en="All">الكل</span></button>
-      <button class="btn btn-ghost chip" data-filter="wedding"><span data-en="Weddings">أفراح</span></button>
-      <button class="btn btn-ghost chip" data-filter="commercial"><span data-en="Commercial">إعلانات</span></button>
-      <button class="btn btn-ghost chip" data-filter="event"><span data-en="Events">فعاليات</span></button>
-      <button class="btn btn-ghost chip" data-filter="social"><span data-en="Social">سوشيال</span></button>
+      <button class="btn chip active" data-filter="all"><span data-en="All">الكل</span></button>
+      <button class="btn chip" data-filter="wedding"><span data-en="Weddings">أفراح</span></button>
+      <button class="btn chip" data-filter="commercial"><span data-en="Commercial">إعلانات</span></button>
+      <button class="btn chip" data-filter="event"><span data-en="Events">فعاليات</span></button>
+      <button class="btn chip" data-filter="social"><span data-en="Social">سوشيال</span></button>
     </div>
 
     <div class="grid portfolio" id="grid">
-      <!-- الروابط اللي بعتهالي (Google Drive) -->
+      <!-- ضع أي روابط GDrive هنا -->
       <article class="tile" data-cat="wedding" data-title="Wedding — Reel 1" data-link="https://drive.google.com/file/d/1f8PhQ_YHAvARsHnOcrNjTWpPAd__pQgK/view?usp=drivesdk">
-        <img alt="Wedding Reel 1" loading="lazy"/><div class="overlay"></div>
+        <img alt="Wedding Reel 1" loading="lazy" referrerpolicy="no-referrer"/><div class="overlay"></div><div class="play"></div>
         <div class="meta"><span data-en="Wedding Reel">فيلم زفاف</span><span class="badge" data-en="Preview">معاينة</span></div>
       </article>
-
       <article class="tile" data-cat="commercial" data-title="Commercial — Noir" data-link="https://drive.google.com/file/d/1VAxcuY2VzrhbT-W1NuvBV3hxUwr_HoGE/view?usp=drivesdk">
-        <img alt="Commercial Noir" loading="lazy"/><div class="overlay"></div>
+        <img alt="Commercial Noir" loading="lazy" referrerpolicy="no-referrer"/><div class="overlay"></div><div class="play"></div>
         <div class="meta"><span data-en="Brand Ad">إعلان براند</span><span class="badge" data-en="Preview">معاينة</span></div>
       </article>
-
       <article class="tile" data-cat="event" data-title="Event Highlights" data-link="https://drive.google.com/file/d/1PJ8zh2QOSKcOx5AmErayvLmfFhjTD5li/view?usp=drivesdk">
-        <img alt="Event Highlights" loading="lazy"/><div class="overlay"></div>
+        <img alt="Event Highlights" loading="lazy" referrerpolicy="no-referrer"/><div class="overlay"></div><div class="play"></div>
         <div class="meta"><span data-en="Event Coverage">تغطية حدث</span><span class="badge" data-en="Highlight">هايلايت</span></div>
       </article>
-
       <article class="tile" data-cat="social" data-title="Social Reel" data-link="https://drive.google.com/file/d/1QUq2Uaz8V7R1MW0Tuk9dCAONsDTuk7Hr/view?usp=drivesdk">
-        <img alt="Social Reel" loading="lazy"/><div class="overlay"></div>
+        <img alt="Social Reel" loading="lazy" referrerpolicy="no-referrer"/><div class="overlay"></div><div class="play"></div>
         <div class="meta"><span data-en="Social Reels">ريلز سوشيال</span><span class="badge" data-en="9×16">9×16</span></div>
       </article>
-
       <article class="tile" data-cat="wedding" data-title="Wedding — Reel 2" data-link="https://drive.google.com/file/d/1WnfM7-sjHx5cJRukKzEbbN92ATC0_I3d/view?usp=drivesdk">
-        <img alt="Wedding Reel 2" loading="lazy"/><div class="overlay"></div>
+        <img alt="Wedding Reel 2" loading="lazy" referrerpolicy="no-referrer"/><div class="overlay"></div><div class="play"></div>
         <div class="meta"><span data-en="Wedding Reel">فيلم زفاف</span><span class="badge" data-en="Preview">معاينة</span></div>
       </article>
-
       <article class="tile" data-cat="commercial" data-title="Commercial — Product" data-link="https://drive.google.com/file/d/1KuJwn61cDUawaez4VCK8eS1M9t_pD_-8/view?usp=drivesdk">
-        <img alt="Commercial Product" loading="lazy"/><div class="overlay"></div>
+        <img alt="Commercial Product" loading="lazy" referrerpolicy="no-referrer"/><div class="overlay"></div><div class="play"></div>
         <div class="meta"><span data-en="Product Ad">إعلان منتج</span><span class="badge" data-en="Preview">معاينة</span></div>
       </article>
     </div>
   </section>
 
-  <!-- خدمات -->
   <section id="services" class="container">
     <h2 class="section-title reveal" data-en="Services">الخدمات</h2>
     <p class="section-sub reveal" data-en="End-to-end solutions from planning to delivery">حلول كاملة من التخطيط للتسليم</p>
@@ -191,7 +184,6 @@
     </div>
   </section>
 
-  <!-- أسعار -->
   <section id="pricing" class="container">
     <h2 class="section-title reveal" data-en="Packages & Starting Prices">باقات وأسعار مبدئية</h2>
     <p class="section-sub reveal" data-en="Prices vary by duration, location and crew size">الأسعار تتغير حسب المدة والموقع وعدد أفراد الطاقم</p>
@@ -226,7 +218,6 @@
     </div>
   </section>
 
-  <!-- تواصل -->
   <section id="contact" class="container">
     <h2 class="section-title reveal" data-en="Contact">طرق التواصل</h2>
     <p class="section-sub reveal" data-en="Pick the best way to reach out & book">اختار الطريقة الأنسب لك للتواصل وحجز موعد</p>
@@ -263,7 +254,7 @@
           <div class="field" style="grid-column:1/-1"><label data-en="Notes">ملاحظات</label><textarea name="notes" rows="3" placeholder="تفاصيل إضافية" data-en-ph="Additional details"></textarea></div>
         </div>
         <div class="quote-actions">
-          <button type="button" class="btn btn-ghost" id="closeQuote" data-en="Close">إغلاق</button>
+          <button type="button" class="btn" id="closeQuote" data-en="Close">إغلاق</button>
           <button type="submit" class="btn btn-primary" data-en="Calculate">احسب</button>
         </div>
         <div id="quoteResult" class="quote-result" style="display:none"></div>
@@ -271,10 +262,10 @@
     </div>
   </div>
 
-  <!-- مودال تشغيل الفيديوهات (GDrive) -->
-  <div id="playerModal" style="position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:140;backdrop-filter:blur(2px);padding:12px">
+  <!-- مودال الفيديو -->
+  <div id="playerModal" style="position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:280;backdrop-filter:blur(2px);padding:12px">
     <div style="width:min(1100px,94%);aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.15);box-shadow:0 20px 60px rgba(0,0,0,.55)">
-      <button id="closeModal" class="btn btn-ghost" style="position:absolute;top:8px;inset-inline-end:8px;z-index:2">✕</button>
+      <button id="closeModal" class="btn" style="position:absolute;top:8px;inset-inline-end:8px;z-index:2">✕</button>
       <iframe id="playerFrame" allow="autoplay; encrypted-media; fullscreen" allowfullscreen style="width:100%;height:100%;border:0"></iframe>
     </div>
   </div>
@@ -282,119 +273,141 @@
   <div class="toast" id="toast" style="display:none"><div class="box"></div></div>
 
   <script>
-  const qs = (s, p=document) => p.querySelector(s);
-  const qsa = (s, p=document) => [...p.querySelectorAll(s)];
-  const setToast = (msg,dur=1600)=>{const t=qs('#toast');t.style.display='flex';t.querySelector('.box').textContent=msg;setTimeout(()=>t.style.display='none',dur)}
+  document.addEventListener('DOMContentLoaded', () => {
+    const qs  = (s, p=document) => p.querySelector(s);
+    const qsa = (s, p=document) => [...p.querySelectorAll(s)];
+    const setToast = (msg,dur=1600)=>{const t=qs('#toast');t.style.display='flex';t.querySelector('.box').textContent=msg;setTimeout(()=>t.style.display='none',dur)};
 
-  /* شريط التقدم */
-  const progress = qs('#progress');
-  const onScroll = () => {
-    const max = document.documentElement.scrollHeight - innerHeight;
-    progress.style.transform = `scaleX(${Math.max(0, Math.min(1, scrollY / max))})`;
-  };
-  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+    // تقدم
+    const progress = qs('#progress');
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      progress.style.transform = `scaleX(${Math.max(0, Math.min(1, scrollY / max))})`;
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
-  /* ظهور */
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
-  },{threshold:.12, rootMargin: '20px'});
-  qsa('.reveal').forEach(el=>io.observe(el));
+    // ظهور
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+    },{threshold:.12, rootMargin: '40px'});
+    qsa('.reveal').forEach(el=>io.observe(el));
 
-  /* ثيم محفوظ */
-  const savedTheme = localStorage.getItem('theme');
-  if(savedTheme){ document.documentElement.setAttribute('data-theme', savedTheme); }
-  qs('#themeToggle').onclick = ()=>{
-    const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', cur);
-    localStorage.setItem('theme', cur);
-  };
-
-  /* تبديل لغة شامل */
-  qsa('[data-en]').forEach(el=>{ if(!el.dataset.ar){ el.dataset.ar = (el.textContent||'').trim(); } });
-  qsa('[data-en-ph]').forEach(el=>{ if(!el.dataset.arph){ el.dataset.arph = el.getAttribute('placeholder')||''; } });
-  let curLang = localStorage.getItem('lang') || 'ar';
-  function applyLang(){
-    const toEN = curLang==='en';
-    document.documentElement.lang = toEN ? 'en' : 'ar';
-    qsa('[data-en]').forEach(el=>{ const en = el.getAttribute('data-en'); if(toEN && en){ el.textContent = en; } else if(el.dataset.ar){ el.textContent = el.dataset.ar; } });
-    qsa('[data-en-ph]').forEach(el=>{ const enph = el.getAttribute('data-en-ph'); el.setAttribute('placeholder', toEN ? (enph||el.dataset.arph) : el.dataset.arph); });
-    const s = qs('#search'); if(s) s.setAttribute('placeholder', toEN ? 'Search portfolio…' : 'ابحث في الأعمال…');
-    setToast(toEN ? 'Language: English' : 'تم التبديل إلى العربية', 900);
-  }
-  applyLang();
-  qs('#langToggle').onclick = ()=>{ curLang = (curLang==='ar') ? 'en' : 'ar'; localStorage.setItem('lang', curLang); applyLang(); };
-
-  /* فلترة/بحث */
-  const chips = qsa('#filters .chip');
-  const tiles = qsa('#grid .tile');
-  let activeFilter = 'all';
-  chips.forEach(ch=>ch.addEventListener('click',()=>{
-    chips.forEach(x=>x.classList.remove('active')); ch.classList.add('active');
-    activeFilter = ch.dataset.filter; filterGrid();
-  }));
-  const search = qs('#search'); search?.addEventListener('input', filterGrid);
-  function filterGrid(){
-    const q = (search?.value||'').toLowerCase();
-    tiles.forEach(t=>{
-      const matchCat = activeFilter==='all' || t.dataset.cat===activeFilter;
-      const matchTxt = (t.dataset.title||'').toLowerCase().includes(q);
-      t.style.display = (matchCat && matchTxt) ? '' : 'none';
+    // ثيم
+    const savedTheme = localStorage.getItem('theme');
+    if(savedTheme){ document.documentElement.setAttribute('data-theme', savedTheme); }
+    qs('#themeToggle').addEventListener('click', ()=>{
+      const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', cur);
+      localStorage.setItem('theme', cur);
     });
-  }
 
-  /* Google Drive فقط (Thumbnail + Preview داخلي) */
-  function driveId(url){ const m = url.match(/\/file\/d\/([\w-]+)/); return m?m[1]:null; }
-  function driveThumb(id){ return `https://drive.google.com/thumbnail?id=${id}&sz=w1200`; }
-  function drivePreview(id){ return `https://drive.google.com/file/d/${id}/preview`; }
-
-  function hydrateTile(t){
-    const url = t.dataset.link; const id = driveId(url); const img = t.querySelector('img');
-    if(id){ img.src = driveThumb(id); } else { img.style.background='linear-gradient(135deg,#1f2937,#0f172a)'; }
-    img.alt = t.dataset.title||'preview';
-  }
-  function hydrateTiles(){ tiles.forEach(t=>hydrateTile(t)); }
-  (window.requestIdleCallback || window.setTimeout)(hydrateTiles, 0);
-
-  // تشغيل داخل مودال
-  const modal = qs('#playerModal'); const frame = qs('#playerFrame');
-  function openPlayer(url){
-    const id = driveId(url); frame.src = id ? drivePreview(id) : url; modal.style.display='flex';
-  }
-  tiles.forEach(t=>t.addEventListener('click',()=>openPlayer(t.dataset.link)));
-  qs('#closeModal')?.addEventListener('click',()=>{ frame.src=''; modal.style.display='none'; });
-  modal?.addEventListener('click',(e)=>{ if(e.target===modal){ frame.src=''; modal.style.display='none'; }});
-
-  /* مودال عرض السعر */
-  const qm = qs('#quoteModal');
-  qs('#openCalc')?.addEventListener('click',()=>{ qm.style.display='flex'; });
-  qs('#closeQuote')?.addEventListener('click',()=>{ qm.style.display='none'; });
-
-  const QUOTE_KEY = 'quotes_v1';
-  const loadQuotes = () => { try { return JSON.parse(localStorage.getItem(QUOTE_KEY)||'[]'); } catch { return [] } };
-  const saveQuotes = (arr) => localStorage.setItem(QUOTE_KEY, JSON.stringify(arr));
-
-  function renderLastQuote(){
-    const list = loadQuotes(); const box = qs('#quoteResult'); if(!box) return;
-    if(list.length){
-      const q = list[list.length-1]; box.style.display='block';
-      box.innerHTML = `<strong>${q.name}</strong> — ${q.type} • ${q.hours}h • crew ${q.crew}<br>
-        EGP <span style="font-weight:800">${Number(q.total).toLocaleString('en-US')}</span>
-        ${q.date?`<br><small>${q.date}</small>`:''}
-        ${q.location?`<br><small>${q.location}</small>`:''}`;
-      box.scrollIntoView({behavior:'smooth', block:'nearest'});
+    // لغة
+    qsa('[data-en]').forEach(el=>{ if(!el.dataset.ar){ el.dataset.ar = (el.textContent||'').trim(); } });
+    qsa('[data-en-ph]').forEach(el=>{ if(!el.dataset.arph){ el.dataset.arph = el.getAttribute('placeholder')||''; } });
+    let curLang = localStorage.getItem('lang') || 'ar';
+    function applyLang(){
+      const toEN = curLang==='en';
+      document.documentElement.lang = toEN ? 'en' : 'ar';
+      qsa('[data-en]').forEach(el=>{ const en = el.getAttribute('data-en'); el.textContent = toEN && en ? en : el.dataset.ar; });
+      qsa('[data-en-ph]').forEach(el=>{ const enph = el.getAttribute('data-en-ph'); el.setAttribute('placeholder', toEN ? (enph||el.dataset.arph) : el.dataset.arph); });
+      const s = qs('#search'); if(s) s.setAttribute('placeholder', toEN ? 'Search portfolio…' : 'ابحث في الأعمال…');
     }
-  }
-  renderLastQuote();
+    applyLang();
+    qs('#langToggle').addEventListener('click', ()=>{ curLang = (curLang==='ar') ? 'en' : 'ar'; localStorage.setItem('lang', curLang); applyLang(); });
 
-  qs('#quoteForm')?.addEventListener('submit',(e)=>{
-    e.preventDefault();
-    const fd = new FormData(e.target); const o = Object.fromEntries(fd.entries());
-    const base = 2500; const mult = {wedding:1.4,commercial:1.6,event:1.2,social:1.1}[o.type]||1.3;
-    const hours = Number(o.hours||4), crew = Number(o.crew||1);
-    const total = Math.round(base*mult + hours*600 + (crew-1)*500);
-    const arr = loadQuotes(); arr.push({...o, hours, crew, total, ts:Date.now()}); saveQuotes(arr);
+    // فلترة/بحث
+    const chips = qsa('#filters .chip');
+    const tiles = qsa('#grid .tile');
+    let activeFilter = 'all';
+    chips.forEach(ch=>ch.addEventListener('click', ()=>{
+      chips.forEach(x=>x.classList.remove('active')); ch.classList.add('active');
+      activeFilter = ch.dataset.filter; filterGrid();
+    }));
+    const search = qs('#search'); search?.addEventListener('input', filterGrid);
+    function filterGrid(){
+      const q = (search?.value||'').toLowerCase();
+      tiles.forEach(t=>{
+        const matchCat = activeFilter==='all' || t.dataset.cat===activeFilter;
+        const matchTxt = (t.dataset.title||'').toLowerCase().includes(q);
+        t.style.display = (matchCat && matchTxt) ? '' : 'none';
+      });
+    }
+
+    // GDrive thumbs
+    const driveId = (url)=>{ const m = url.match(/\/file\/d\/([\w-]+)/); return m?m[1]:null; };
+    const thumbCandidates = (id)=>[
+      `https://drive.google.com/uc?export=thumbnail&id=${id}`,
+      `https://drive.google.com/thumbnail?id=${id}&sz=w1200`,
+      `https://lh3.googleusercontent.com/d/${id}=w1200`
+    ];
+    const drivePreview = (id)=>`https://drive.google.com/file/d/${id}/preview`;
+
+    function setThumbWithFallback(img, id){
+      const cands = thumbCandidates(id); let i=0;
+      img.onerror = ()=>{ i++; if(i < cands.length){ img.src = cands[i]; } else { img.onerror=null; img.removeAttribute('src'); img.style.background='linear-gradient(135deg,#1f2937,#0f172a)'; } };
+      img.src = cands[0];
+    }
+    function hydrateTile(t){
+      const id = driveId(t.dataset.link); const img = t.querySelector('img');
+      img.alt = t.dataset.title||'preview';
+      if(id){ setThumbWithFallback(img, id); } else { img.style.background='linear-gradient(135deg,#1f2937,#0f172a)'; }
+    }
+    (window.requestIdleCallback || window.setTimeout)(()=>tiles.forEach(hydrateTile), 0);
+
+    // Player modal
+    const modal = qs('#playerModal'); const frame = qs('#playerFrame');
+    function openPlayer(url){
+      const id = driveId(url);
+      if(!id){ setToast('رابط غير صالح'); return; }
+      frame.src = drivePreview(id);
+      modal.style.display='flex';
+      setTimeout(()=>{ try{ if(!frame.contentWindow){ setToast('لو مافتحش: فعّل Anyone with the link على Google Drive'); } }catch(_e){} }, 2500);
+    }
+    tiles.forEach(t=>t.addEventListener('click',()=>openPlayer(t.dataset.link)));
+    qs('#closeModal').addEventListener('click', ()=>{ frame.src=''; modal.style.display='none'; });
+    modal.addEventListener('click', (e)=>{ if(e.target===modal){ frame.src=''; modal.style.display='none'; }});
+
+    // Quote modal
+    const qm = qs('#quoteModal');
+    qs('#openCalc').addEventListener('click', ()=>{ qm.style.display='flex'; });
+    qs('#closeQuote').addEventListener('click', ()=>{ qm.style.display='none'; });
+
+    const QUOTE_KEY = 'quotes_v1';
+    const loadQuotes = () => { try { return JSON.parse(localStorage.getItem(QUOTE_KEY)||'[]'); } catch { return [] } };
+    const saveQuotes = (arr) => localStorage.setItem(QUOTE_KEY, JSON.stringify(arr));
+    function renderLastQuote(){
+      const list = loadQuotes(); const box = qs('#quoteResult'); if(!box) return;
+      if(list.length){
+        const q = list[list.length-1]; box.style.display='block';
+        box.innerHTML = `<strong>${q.name}</strong> — ${q.type} • ${q.hours}h • crew ${q.crew}<br>
+          EGP <span style="font-weight:800">${Number(q.total).toLocaleString('en-US')}</span>
+          ${q.date?`<br><small>${q.date}</small>`:''}
+          ${q.location?`<br><small>${q.location}</small>`:''}`;
+        box.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }
+    }
     renderLastQuote();
-    setToast(curLang==='en' ? 'Saved your estimate' : 'تم حفظ التقدير');
+
+    qs('#quoteForm').addEventListener('submit',(e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target); const o = Object.fromEntries(fd.entries());
+      const base = 2500; const mult = {wedding:1.4,commercial:1.6,event:1.2,social:1.1}[o.type]||1.3;
+      const hours = Number(o.hours||4), crew = Number(o.crew||1);
+      const total = Math.round(base*mult + hours*600 + (crew-1)*500);
+      const arr = loadQuotes(); arr.push({...o, hours, crew, total, ts:Date.now()}); saveQuotes(arr);
+      renderLastQuote();
+      setToast(curLang==='en' ? 'Saved your estimate' : 'تم حفظ التقدير');
+    });
+
+    // نجوم الهيدر (إطفاؤه على الشاشات الصغيرة)
+    if(matchMedia('(min-width: 481px)').matches){
+      const c = qs('#spark'); if(c){ const ctx = c.getContext('2d');
+        let w,h; const DPR = devicePixelRatio || 1;
+        function resize(){ w = c.offsetWidth; h = c.offsetHeight; c.width = w*DPR; c.height = h*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);} resize(); addEventListener('resize', resize, {passive:true});
+        const stars = Array.from({length:70},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+0.5,a:Math.random()*1}));
+        (function draw(){ ctx.clearRect(0,0,w,h); for(const s of stars){ s.a += 0.02; const glow=(Math.sin(s.a)+1)/2; ctx.beginPath(); ctx.fillStyle=`rgba(255,255,255,${0.12+glow*0.4})`; ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill(); } requestAnimationFrame(draw); })();
+      }
+    }
   });
   </script>
 </body>
