@@ -10,7 +10,6 @@
       --bg:#0a0b0f; --surface:#0f1117; --card:#121520; --text:#f5f7fb; --muted:#a7b0c0; --primary:#e11d48; --accent:#22d3ee; --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.35);
       --grad1: radial-gradient(1200px 500px at 50% 0%, rgba(239,43,90,.12), rgba(34,211,238,.06) 50%, transparent 70%);
     }
-    /* وضع فاتح محفوظ */
     [data-theme="light"]{
       --bg:#f6f7fb; --surface:#ffffff; --card:#ffffff; --text:#0b0c10; --muted:#4b5565; --primary:#e11d48; --accent:#0891b2; --shadow:0 10px 30px rgba(0,0,0,.12);
       --grad1: radial-gradient(1000px 420px at 50% -10%, rgba(239,43,90,.18), rgba(8,145,178,.08) 55%, transparent 70%);
@@ -26,11 +25,19 @@
     .btn-ghost{background:transparent;border:1px solid #2a2f3a;color:var(--text)}
     .btn:hover{transform:translateY(-2px) scale(1.01)}
 
-    /* ====== الشريط العلوي (كان عندك .toolbar) وثبّتناه بدون تغيير بنية HTML ====== */
-    .toolbar{position:fixed; top:0; left:0; right:0; z-index:120; padding:10px 0; background:color-mix(in oklab, var(--bg) 85%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid rgba(255,255,255,.08)}
-    .toolbar.container{width:min(1200px,92%); margin-inline:auto}
-    .toolbar .left, .toolbar .right{display:flex; gap:10px; align-items:center}
-    .switch{background:var(--surface); border:1px solid #2a2f3a; padding:8px 12px; border-radius:999px}
+    /* ====== شريط الأدوات ثابت + Responsive فعلي ====== */
+    .toolbar{
+      position:fixed; top:0; left:0; right:0; z-index:120;
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      padding:10px clamp(12px,4vw,24px);
+      background:color-mix(in oklab, var(--bg) 85%, transparent);
+      backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      box-sizing:border-box;
+    }
+    .toolbar .left, .toolbar .right{display:flex; gap:10px; align-items:center; min-width:0}
+    .switch{background:var(--surface); border:1px solid #2a2f3a; padding:8px 12px; border-radius:999px; display:flex; align-items:center; min-width:0}
+    #search{min-width:0; width: clamp(140px, 30vw, 320px);}
     .toolbar-spacer{height:64px}
 
     header.hero{position:relative;min-height:82vh;display:grid;place-items:center;text-align:center;background:var(--grad1)}
@@ -55,20 +62,20 @@
     .tile .meta{position:absolute;inset-inline:14px;bottom:12px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px}
     .badge{font-size:12px;padding:.38rem .6rem;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25)}
     .col-6{grid-column:span 6} .col-8{grid-column:span 8} .col-4{grid-column:span 4} .col-12{grid-column:span 12}
+    @media (max-width:700px){ .grid.portfolio{grid-template-columns:repeat(6,1fr)} .col-8,.col-6,.col-4{grid-column:span 6} }
 
     .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
     .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);transition:.25s}
     .card:hover{transform:translateY(-4px)} .card p{margin:0;color:var(--muted)}
+    @media (max-width:980px){ .cards{grid-template-columns:1fr 1fr} }
+    @media (max-width:700px){ .cards{grid-template-columns:1fr} }
 
     .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
     .plan{background:linear-gradient(135deg,rgba(230,29,72,.12),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:24px}
     .plan .price{font-size:32px;font-weight:800;margin:10px 0 14px}
     .plan ul{margin:0; padding:0 18px; color:var(--muted)}
-
-    .calc{display:grid;grid-template-columns:1fr 1fr; gap:16px}
-    .field{display:grid;gap:6px;margin-bottom:8px}
-    .field input,.field textarea,.field select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #2a2f3a;background:#0f1117;color:var(--text)}
-    [data-theme="light"] .field input,[data-theme="light"] .field textarea,[data-theme="light"] .field select{background:#fff;border-color:#ddd;color:#111}
+    @media (max-width:980px){ .pricing{grid-template-columns:1fr 1fr} }
+    @media (max-width:700px){ .pricing{grid-template-columns:1fr} }
 
     .faq{display:grid; gap:12px}
     details{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:14px}
@@ -81,38 +88,38 @@
     .reveal{transform:translateY(16px) scale(.98);opacity:0;transition:.7s cubic-bezier(.2,.8,.2,1)}
     .reveal.visible{transform:none;opacity:1}
 
-    @media (max-width:980px){ .cards,.pricing{grid-template-columns:1fr 1fr} .calc{grid-template-columns:1fr} }
-    @media (max-width:700px){ .grid.portfolio{grid-template-columns:repeat(6,1fr)} .col-8,.col-6,.col-4{grid-column:span 6} .cards,.pricing{grid-template-columns:1fr} .hero p{font-size:1rem} }
-
     .magnet{position:relative; overflow:hidden}
     .magnet span{position:relative; z-index:2}
     .magnet::after{content:""; position:absolute; inset:auto; width:0; height:0; border-radius:999px; background:rgba(255,255,255,.12); transform:translate(-50%,-50%); pointer-events:none; transition:width .25s,height .25s}
     .magnet.active::after{width:160px; height:160px}
 
     .progress{position:fixed; inset-inline:0; top:0; height:3px; background:linear-gradient(90deg,var(--primary),var(--accent)); transform-origin:0 0; transform:scaleX(0); z-index:80}
-    .toast{position:fixed; bottom:18px; inset-inline:18px; display:flex; justify-content:center; z-index:90}
-    .toast .box{background:var(--surface); border:1px solid rgba(255,255,255,.08); padding:12px 16px; border-radius:12px; box-shadow:var(--shadow)}
+    .toast{position:fixed; bottom:18px; inset-inline:18px; display:flex; justify-content:center; z-index:200; pointer-events:none}
+    .toast .box{pointer-events:auto;background:var(--surface); border:1px solid rgba(255,255,255,.08); padding:12px 16px; border-radius:12px; box-shadow:var(--shadow)}
 
-    /* ==== مودال عرض السعر (الكارت) ==== */
-    #quoteModal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:110; background:rgba(0,0,0,.55); backdrop-filter:blur(3px)}
-    .quote-card{width:min(820px,92%); background:var(--surface); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:18px; box-shadow:var(--shadow)}
+    /* ==== مودال عرض السعر (الكارت) — Scroll داخل البطاقة ==== */
+    #quoteModal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:150; background:rgba(0,0,0,.55); backdrop-filter:blur(3px); padding:16px}
+    .quote-card{width:min(820px,92%); max-height:85vh; overflow:auto; background:var(--surface); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:18px; box-shadow:var(--shadow)}
     .quote-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-    .quote-actions{display:flex; gap:10px; justify-content:flex-end; margin-top:10px}
-    .quote-result{margin-top:14px; background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:14px}
+    .field{display:grid;gap:6px;margin-bottom:6px}
+    .field input,.field textarea,.field select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #2a2f3a;background:#0f1117;color:var(--text)}
+    [data-theme="light"] .field input,[data-theme="light"] .field textarea,[data-theme="light"] .field select{background:#fff;border-color:#ddd;color:#111}
+    .quote-actions{position:sticky; bottom:0; background:linear-gradient(to top, var(--surface), transparent); padding-top:10px; display:flex; gap:10px; justify-content:flex-end; margin-top:6px}
+    .quote-result{margin-top:12px; background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:12px}
     @media(max-width:760px){ .quote-grid{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
   <div class="progress" id="progress"></div>
 
-  <!-- شريط الأدوات الأصلي بتاعك (ثابت الآن) -->
-  <div class="toolbar container">
+  <!-- شريط الأدوات الأصلي (ثابت ومحبوس داخل الشاشة) -->
+  <div class="toolbar">
     <div class="left">
       <button id="themeToggle" class="btn btn-ghost magnet" aria-label="تبديل المظهر"><span>🌙/☀️</span></button>
       <button id="langToggle" class="btn btn-ghost magnet" aria-label="Switch Language"><span>AR/EN</span></button>
     </div>
     <div class="right switch">
-      <input id="search" type="search" placeholder="ابحث في الأعمال…" style="background:transparent;border:0;outline:none;color:var(--text)">
+      <input id="search" type="search" placeholder="ابحث في الأعمال…" aria-label="ابحث في الأعمال" style="background:transparent;border:0;outline:none;color:var(--text);min-width:0;">
     </div>
   </div>
   <div class="toolbar-spacer"></div>
@@ -122,98 +129,98 @@
       <h1 class="reveal" data-en="We turn your moments into a film">نحوّل لحظاتك إلى فيلم لا يُنسى</h1>
       <p class="reveal" style="transition-delay:.08s" data-en="A modern, animated videography portfolio">بورتفوليو مصور فيديوغرافي — مودرن، ديناميكي، ومليان أنيميشن.</p>
       <div class="cta reveal" style="transition-delay:.12s">
-        <a href="#portfolio" class="btn btn-primary magnet"><span>شاهد الأعمال</span></a>
-        <button class="btn btn-ghost magnet" id="openCalc"><span>اطلب عرض سعر فوري</span></button>
+        <a href="#portfolio" class="btn btn-primary magnet"><span data-en="See Work">شاهد الأعمال</span></a>
+        <button class="btn btn-ghost magnet" id="openCalc"><span data-en="Instant Quote">اطلب عرض سعر فوري</span></button>
       </div>
     </div>
     <canvas id="spark" class="spark" aria-hidden="true"></canvas>
   </header>
 
   <section id="portfolio" class="container">
-    <h2 class="section-title reveal">أعمال مختارة</h2>
-    <p class="section-sub reveal">فلتر حسب النوع أو استخدم البحث بالأعلى</p>
+    <h2 class="section-title reveal" data-en="Selected Work">أعمال مختارة</h2>
+    <p class="section-sub reveal" data-en="Filter by type or use the search above">فلتر حسب النوع أو استخدم البحث بالأعلى</p>
 
     <div class="reveal" style="margin-bottom:14px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap" id="filters">
-      <button class="btn btn-ghost magnet chip active" data-filter="all"><span>الكل</span></button>
-      <button class="btn btn-ghost magnet chip" data-filter="wedding"><span>أفراح</span></button>
-      <button class="btn btn-ghost magnet chip" data-filter="commercial"><span>إعلانات</span></button>
-      <button class="btn btn-ghost magnet chip" data-filter="event"><span>فعاليات</span></button>
-      <button class="btn btn-ghost magnet chip" data-filter="social"><span>سوشيال</span></button>
+      <button class="btn btn-ghost magnet chip active" data-filter="all"><span data-en="All">الكل</span></button>
+      <button class="btn btn-ghost magnet chip" data-filter="wedding"><span data-en="Weddings">أفراح</span></button>
+      <button class="btn btn-ghost magnet chip" data-filter="commercial"><span data-en="Commercial">إعلانات</span></button>
+      <button class="btn btn-ghost magnet chip" data-filter="event"><span data-en="Events">فعاليات</span></button>
+      <button class="btn btn-ghost magnet chip" data-filter="social"><span data-en="Social">سوشيال</span></button>
     </div>
 
     <div class="grid portfolio" id="grid">
       <article class="tile col-8 reveal" data-cat="commercial" data-title="إعلان عطور — Noir" data-duration="60s" data-link="https://youtu.be/LeFb5SOypzo?si=RVkGNmEMpJUn4rMZ">
         <img alt="Commercial Ad"/>
         <div class="overlay"></div>
-        <div class="meta"><span>إعلان براند</span><span class="badge">60 ثانية</span></div>
+        <div class="meta"><span data-en="Brand Ad">إعلان براند</span><span class="badge" data-en="60s">60 ثانية</span></div>
       </article>
       <article class="tile col-4 reveal" data-cat="wedding" data-title="Wedding — Sara & Ali" data-duration="3m" data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
         <img alt="Wedding Film"/>
         <div class="overlay"></div>
-        <div class="meta"><span>فيلم زفاف</span><span class="badge">3 دقائق</span></div>
+        <div class="meta"><span data-en="Wedding Film">فيلم زفاف</span><span class="badge" data-en="3 min">3 دقائق</span></div>
       </article>
       <article class="tile col-6 reveal" data-cat="event" data-title="Tech Summit 2025" data-duration="HL" data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
         <img alt="Event Coverage"/>
         <div class="overlay"></div>
-        <div class="meta"><span>تغطية حدث</span><span class="badge">هايلايت</span></div>
+        <div class="meta"><span data-en="Event Coverage">تغطية حدث</span><span class="badge" data-en="Highlight">هايلايت</span></div>
       </article>
       <article class="tile col-6 reveal" data-cat="social" data-title="Reels Pack for Brand X" data-duration="9x16" data-link="https://www.facebook.com/KeroMagedphotography/videos/761825510184186/?app=fbl">
         <img alt="Social Media Reels"/>
         <div class="overlay"></div>
-        <div class="meta"><span>ريلز سوشيال</span><span class="badge">9×16</span></div>
+        <div class="meta"><span data-en="Social Reels">ريلز سوشيال</span><span class="badge" data-en="9×16">9×16</span></div>
       </article>
       <article class="tile col-6 reveal" data-cat="social" data-title="Instagram Reel" data-duration="short" data-link="https://www.instagram.com/reel/DDCeFbToalV/?igsh=MWU0bzZ5MTZveWY0cA==">
         <img alt="Instagram Reel"/>
         <div class="overlay"></div>
-        <div class="meta"><span>Instagram Reel</span><span class="badge">قصير</span></div>
+        <div class="meta"><span data-en="Instagram Reel">Instagram Reel</span><span class="badge" data-en="Short">قصير</span></div>
       </article>
       <article class="tile col-12 reveal" data-cat="commercial" data-title="Google Drive Video" data-duration="prev" data-link="https://drive.google.com/file/d/1ydYdWj2P9zw0vob8F4-HZi4HQPNmsg-A/view?usp=drivesdk">
         <img alt="Google Drive Video"/>
         <div class="overlay"></div>
-        <div class="meta"><span>Google Drive</span><span class="badge">Preview</span></div>
+        <div class="meta"><span data-en="Google Drive">Google Drive</span><span class="badge" data-en="Preview">Preview</span></div>
       </article>
     </div>
   </section>
 
   <section id="services" class="container">
-    <h2 class="section-title reveal">الخدمات</h2>
-    <p class="section-sub reveal">حلول كاملة من التخطيط للتسليم</p>
+    <h2 class="section-title reveal" data-en="Services">الخدمات</h2>
+    <p class="section-sub reveal" data-en="End-to-end solutions from planning to delivery">حلول كاملة من التخطيط للتسليم</p>
     <div class="cards">
-      <div class="card reveal"><h3>Wedding Films</h3><p>تغطية سينمائية مع مونتاج عاطفي.</p></div>
-      <div class="card reveal" style="transition-delay:.06s"><h3>Commercial Ads</h3><p>إعلانات سريعة التأثير للسوشيال.</p></div>
-      <div class="card reveal" style="transition-delay:.12s"><h3>Event Coverage</h3><p>توثيق احترافي للفعاليات.</p></div>
+      <div class="card reveal"><h3 data-en="Wedding Films">Wedding Films</h3><p data-en="Cinematic coverage with emotional edit.">تغطية سينمائية مع مونتاج عاطفي.</p></div>
+      <div class="card reveal" style="transition-delay:.06s"><h3 data-en="Commercial Ads">Commercial Ads</h3><p data-en="High-impact ads for social.">إعلانات سريعة التأثير للسوشيال.</p></div>
+      <div class="card reveal" style="transition-delay:.12s"><h3 data-en="Event Coverage">Event Coverage</h3><p data-en="Professional event documentation.">توثيق احترافي للفعاليات.</p></div>
     </div>
   </section>
 
   <section id="pricing" class="container">
-    <h2 class="section-title reveal">باقات وأسعار مبدئية</h2>
-    <p class="section-sub reveal">الأسعار تتغير حسب المدة والموقع وعدد أفراد الطاقم</p>
+    <h2 class="section-title reveal" data-en="Packages & Starting Prices">باقات وأسعار مبدئية</h2>
+    <p class="section-sub reveal" data-en="Prices vary by duration, location and crew size">الأسعار تتغير حسب المدة والموقع وعدد أفراد الطاقم</p>
     <div class="pricing">
       <div class="plan reveal">
-        <h3>Social Starter</h3>
-        <div class="price">EGP 4,500</div>
+        <h3 data-en="Social Starter">Social Starter</h3>
+        <div class="price" data-en="EGP 4,500">EGP 4,500</div>
         <ul>
-          <li>فيديو قصير 30-60 ثانية</li>
-          <li>تصحيح ألوان أساسي</li>
-          <li>تسليم خلال 48 ساعة</li>
+          <li data-en="30–60s short video">فيديو قصير 30-60 ثانية</li>
+          <li data-en="Basic color correction">تصحيح ألوان أساسي</li>
+          <li data-en="Delivery within 48h">تسليم خلال 48 ساعة</li>
         </ul>
       </div>
       <div class="plan reveal" style="transition-delay:.06s">
-        <h3>Event Highlights</h3>
-        <div class="price">EGP 9,500</div>
+        <h3 data-en="Event Highlights">Event Highlights</h3>
+        <div class="price" data-en="EGP 9,500">EGP 9,500</div>
         <ul>
-          <li>تغطية حتى 6 ساعات</li>
-          <li>مصور + مساعد</li>
-          <li>فيديو هايلايت 1-2 دقيقة</li>
+          <li data-en="Coverage up to 6 hours">تغطية حتى 6 ساعات</li>
+          <li data-en="Videographer + assistant">مصور + مساعد</li>
+          <li data-en="1–2 min highlight video">فيديو هايلايت 1-2 دقيقة</li>
         </ul>
       </div>
       <div class="plan reveal" style="transition-delay:.12s">
-        <h3>Wedding Premium</h3>
-        <div class="price">EGP 18,000</div>
+        <h3 data-en="Wedding Premium">Wedding Premium</h3>
+        <div class="price" data-en="EGP 18,000">EGP 18,000</div>
         <ul>
-          <li>طاقم 2-3 أفراد</li>
-          <li>فيلم 3-5 دقائق + تيزر</li>
-          <li>تصحيح ألوان احترافي</li>
+          <li data-en="Crew of 2–3">طاقم 2-3 أفراد</li>
+          <li data-en="3–5 min film + teaser">فيلم 3-5 دقائق + تيزر</li>
+          <li data-en="Pro color grading">تصحيح ألوان احترافي</li>
         </ul>
       </div>
     </div>
@@ -221,43 +228,43 @@
 
   <!-- طرق التواصل -->
   <section id="contact" class="container">
-    <h2 class="section-title reveal">طرق التواصل</h2>
-    <p class="section-sub reveal">اختار الطريقة الأنسب لك للتواصل وحجز موعد</p>
+    <h2 class="section-title reveal" data-en="Contact">طرق التواصل</h2>
+    <p class="section-sub reveal" data-en="Pick the best way to reach out & book">اختار الطريقة الأنسب لك للتواصل وحجز موعد</p>
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
-      <a class="card reveal" href="https://wa.me/201000000000" target="_blank" rel="noopener">واتساب</a>
-      <a class="card reveal" href="tel:+201000000000">اتصال هاتفي</a>
-      <a class="card reveal" href="mailto:hello@example.com">البريد الإلكتروني</a>
-      <a class="card reveal" href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener">إنستجرام</a>
+      <a class="card reveal" href="https://wa.me/201000000000" target="_blank" rel="noopener" data-en="WhatsApp">واتساب</a>
+      <a class="card reveal" href="tel:+201000000000" data-en="Phone Call">اتصال هاتفي</a>
+      <a class="card reveal" href="mailto:hello@example.com" data-en="Email">البريد الإلكتروني</a>
+      <a class="card reveal" href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener" data-en="Instagram">إنستجرام</a>
     </div>
   </section>
 
-  <footer class="container">© جميع الحقوق محفوظة</footer>
+  <footer class="container" data-en="All rights reserved">© جميع الحقوق محفوظة</footer>
 
-  <!-- مودال عرض السعر (جديد) -->
+  <!-- مودال عرض السعر (كارت قابل للسكرول) -->
   <div id="quoteModal" aria-modal="true" role="dialog">
     <div class="quote-card">
-      <h3 style="margin:6px 0 14px">طلب عرض سعر مبدئي</h3>
+      <h3 style="margin:6px 0 14px" data-en="Quick Quote">طلب عرض سعر مبدئي</h3>
       <form id="quoteForm">
         <div class="quote-grid">
-          <div class="field"><label>الاسم</label><input name="name" required placeholder="اسم العميل"></div>
-          <div class="field"><label>الموبايل</label><input name="phone" required placeholder="0100…"></div>
-          <div class="field"><label>نوع الخدمة</label>
+          <div class="field"><label data-en="Name">الاسم</label><input name="name" required placeholder="اسم العميل" data-en-ph="Client name"></div>
+          <div class="field"><label data-en="Phone">الموبايل</label><input name="phone" required placeholder="0100…" data-en-ph="Phone"></div>
+          <div class="field"><label data-en="Service Type">نوع الخدمة</label>
             <select name="type">
-              <option value="wedding">أفراح</option>
-              <option value="commercial">إعلانات</option>
-              <option value="event">فعاليات</option>
-              <option value="social">سوشيال</option>
+              <option value="wedding" data-en="Weddings">أفراح</option>
+              <option value="commercial" data-en="Commercial">إعلانات</option>
+              <option value="event" data-en="Events">فعاليات</option>
+              <option value="social" data-en="Social">سوشيال</option>
             </select>
           </div>
-          <div class="field"><label>عدد الساعات</label><input type="number" name="hours" min="1" value="4"></div>
-          <div class="field"><label>عدد أفراد الطاقم</label><input type="number" name="crew" min="1" value="1"></div>
-          <div class="field"><label>التاريخ</label><input type="date" name="date"></div>
-          <div class="field"><label>الموقع</label><input name="location" placeholder="المكان/المدينة"></div>
-          <div class="field" style="grid-column:1/-1"><label>ملاحظات</label><textarea name="notes" rows="3" placeholder="تفاصيل إضافية"></textarea></div>
+          <div class="field"><label data-en="Hours">عدد الساعات</label><input type="number" name="hours" min="1" value="4"></div>
+          <div class="field"><label data-en="Crew Size">عدد أفراد الطاقم</label><input type="number" name="crew" min="1" value="1"></div>
+          <div class="field"><label data-en="Date">التاريخ</label><input type="date" name="date"></div>
+          <div class="field"><label data-en="Location">الموقع</label><input name="location" placeholder="المكان/المدينة" data-en-ph="City/Location"></div>
+          <div class="field" style="grid-column:1/-1"><label data-en="Notes">ملاحظات</label><textarea name="notes" rows="3" placeholder="تفاصيل إضافية" data-en-ph="Additional details"></textarea></div>
         </div>
         <div class="quote-actions">
-          <button type="button" class="btn btn-ghost" id="closeQuote">إغلاق</button>
-          <button type="submit" class="btn btn-primary">احسب</button>
+          <button type="button" class="btn btn-ghost" id="closeQuote" data-en="Close">إغلاق</button>
+          <button type="submit" class="btn btn-primary" data-en="Calculate">احسب</button>
         </div>
         <div id="quoteResult" class="quote-result" style="display:none"></div>
       </form>
@@ -265,7 +272,7 @@
   </div>
 
   <!-- مودال تشغيل الفيديوهات (الأصلي) -->
-  <div id="playerModal" style="position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(2px)">
+  <div id="playerModal" style="position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:140;backdrop-filter:blur(2px)">
     <div style="width:min(1100px,92%);aspect-ratio:16/9;background:#000;border-radius:18px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.15);box-shadow:0 20px 60px rgba(0,0,0,.6)">
       <button id="closeModal" class="btn btn-ghost" style="position:absolute;top:10px;inset-inline-end:10px;z-index:2">✕</button>
       <iframe id="playerFrame" allow="autoplay; encrypted-media; fullscreen" allowfullscreen style="width:100%;height:100%;border:0"></iframe>
@@ -314,7 +321,7 @@
     function draw(){ ctx.clearRect(0,0,w,h); for(const s of stars){ s.a += 0.02; const glow = (Math.sin(s.a)+1)/2; ctx.beginPath(); ctx.fillStyle = `rgba(255,255,255,${0.15+glow*0.5})`; ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill(); } requestAnimationFrame(draw);} draw();
   })();
 
-  // حفظ الثيم (بدل body.light)
+  /* ================== ثيم محفوظ ================== */
   const savedTheme = localStorage.getItem('theme');
   if(savedTheme){ document.documentElement.setAttribute('data-theme', savedTheme); }
   qs('#themeToggle').onclick = ()=>{
@@ -323,25 +330,34 @@
     localStorage.setItem('theme', cur);
   };
 
-  // تحسين تبديل اللغة — حفظ العربي الأصلي + LocalStorage
-  const langBtn = qs('#langToggle');
+  /* ================== تبديل اللغة شامل ================== */
+  // خزّن النص العربي الأصلي لجميع العناصر ذات data-en
   qsa('[data-en]').forEach(el=>{ if(!el.dataset.ar){ el.dataset.ar = (el.textContent||'').trim(); } });
   let curLang = localStorage.getItem('lang') || 'ar';
   function applyLang(){
-    document.documentElement.lang = (curLang==='en') ? 'en' : 'ar';
     const toEN = curLang==='en';
+    document.documentElement.lang = toEN ? 'en' : 'ar';
+    // نصوص العناصر
     qsa('[data-en]').forEach(el=>{
       const en = el.getAttribute('data-en');
       if(toEN && en){ el.textContent = en; }
       else if(el.dataset.ar){ el.textContent = el.dataset.ar; }
     });
-    const s = qs('#search'); if(s) s.setAttribute('placeholder', toEN ? 'Search portfolio…' : 'ابحث في الأعمال…');
+    // Placeholderات
+    const s = qs('#search');
+    if(s) s.setAttribute('placeholder', toEN ? 'Search portfolio…' : 'ابحث في الأعمال…');
+    qsa('[data-en-ph]').forEach(inp=>{
+      const enph = inp.getAttribute('data-en-ph');
+      const arph = inp.getAttribute('placeholder') || '';
+      if(!inp.dataset.arph) inp.dataset.arph = arph;
+      inp.setAttribute('placeholder', toEN ? (enph||arph) : (inp.dataset.arph||arph));
+    });
     setToast(toEN ? 'Language: English' : 'تم التبديل إلى العربية', 900);
   }
   applyLang();
-  langBtn?.addEventListener('click',()=>{ curLang = (curLang==='ar') ? 'en' : 'ar'; localStorage.setItem('lang', curLang); applyLang(); });
+  qs('#langToggle')?.addEventListener('click',()=>{ curLang = (curLang==='ar') ? 'en' : 'ar'; localStorage.setItem('lang', curLang); applyLang(); });
 
-  // فلترة وبحث
+  /* ================== فلترة وبحث ================== */
   const chips = qsa('#filters .chip');
   const tiles = qsa('#grid .tile');
   let activeFilter = 'all';
@@ -360,7 +376,7 @@
     });
   }
 
-  // مزوّدين الفيديو + المعاينة + المشغل (زي ما عندك)
+  /* ================== معاينات الفيديو ================== */
   function driveId(url){ const m = url.match(/\/file\/d\/([\w-]+)/); return m?m[1]:null; }
   function ytId(url){ const m = url.match(/[?&]v=([\w-]{11})/) || url.match(/youtu\.be\/([\w-]{11})/); return m?m[1]:null; }
   function provider(url){
@@ -374,12 +390,8 @@
   async function fetchThumb(url){
     const prov = provider(url);
     try{
-      if(prov==='gdrive'){
-        const id = driveId(url); return id?`https://drive.google.com/thumbnail?id=${id}&sz=w1200`:null;
-      }
-      if(prov==='youtube'){
-        const id = ytId(url); return id?`https://img.youtube.com/vi/${id}/hqdefault.jpg`:null;
-      }
+      if(prov==='gdrive'){ const id = driveId(url); return id?`https://drive.google.com/thumbnail?id=${id}&sz=w1200`:null; }
+      if(prov==='youtube'){ const id = ytId(url); return id?`https://img.youtube.com/vi/${id}/hqdefault.jpg`:null; }
       const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
       if(res.ok){ const data = await res.json(); return data.thumbnail_url || null; }
     }catch(e){ console.warn('thumb error', e); }
@@ -399,17 +411,11 @@
   const modal = qs('#playerModal'); const frame = qs('#playerFrame');
   function openPlayer(url){
     const prov = provider(url); let src = '';
-    if(prov==='youtube'){
-      const id = ytId(url); src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;}
-    else if(prov==='instagram'){
-      const id = (url.split('/reel/')[1]||'').split('/')[0] || (url.split('/p/')[1]||'').split('/')[0];
-      src = `https://www.instagram.com/embed/reel/${id}?autoplay=1&muted=1`; }
-    else if(prov==='facebook'){
-      src = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0&autoplay=1&mute=1`; }
-    else if(prov==='vimeo'){
-      const id = url.split('/').pop(); src = `https://player.vimeo.com/video/${id}?autoplay=1&muted=1`; }
-    else if(prov==='gdrive'){
-      const id = driveId(url); src = `https://drive.google.com/file/d/${id}/preview`; }
+    if(prov==='youtube'){ const id = ytId(url); src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;}
+    else if(prov==='instagram'){ const id = (url.split('/reel/')[1]||'').split('/')[0] || (url.split('/p/')[1]||'').split('/')[0]; src = `https://www.instagram.com/embed/reel/${id}?autoplay=1&muted=1`; }
+    else if(prov==='facebook'){ src = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0&autoplay=1&mute=1`; }
+    else if(prov==='vimeo'){ const id = url.split('/').pop(); src = `https://player.vimeo.com/video/${id}?autoplay=1&muted=1`; }
+    else if(prov==='gdrive'){ const id = driveId(url); src = `https://drive.google.com/file/d/${id}/preview`; }
     else { src = url; }
     frame.src = src; modal.style.display='flex';
   }
@@ -417,7 +423,7 @@
   qs('#closeModal')?.addEventListener('click',()=>{ frame.src=''; modal.style.display='none'; });
   modal?.addEventListener('click',(e)=>{ if(e.target===modal){ frame.src=''; modal.style.display='none'; }});
 
-  // === مودال عرض السعر: فتح/إغلاق + حفظ/عرض آخر نتيجة ===
+  /* ================== مودال عرض السعر ================== */
   qs('#openCalc')?.addEventListener('click',()=>{ qs('#quoteModal').style.display='flex'; });
   qs('#closeQuote')?.addEventListener('click',()=>{ qs('#quoteModal').style.display='none'; });
 
@@ -433,6 +439,8 @@
         EGP <span style="font-weight:800">${Number(q.total).toLocaleString('en-US')}</span>
         ${q.date?`<br><small>${q.date}</small>`:''}
         ${q.location?`<br><small>${q.location}</small>`:''}`;
+      // ضمن إن النتيجة باينه حتى على الشاشات الصغيرة
+      box.scrollIntoView({behavior:'smooth', block:'nearest'});
     }
   }
   renderLastQuote();
@@ -445,7 +453,7 @@
     const total = Math.round(base*multiplier + hours*600 + (crew-1)*500);
     const list = loadQuotes(); list.push({...obj, hours, crew, total, ts: Date.now()}); saveQuotes(list);
     renderLastQuote();
-    setToast(curLang==='en' ? 'Saved your estimate' : 'تم حفظ التقدير');
+    setToast(curLang==='en' ? 'Saved your estimate' : 'تم حفظ التقدير', 1200);
   });
   </script>
 </body>
