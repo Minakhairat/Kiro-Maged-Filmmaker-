@@ -262,7 +262,7 @@
     </div>
   </div>
 
-  <!-- مودال الفيديو -->
+  <!-- مودال الفيديو (fallback عند منع التشغيل المباشر) -->
   <div id="playerModal" style="position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:280;backdrop-filter:blur(2px);padding:12px">
     <div style="width:min(1100px,94%);aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.15);box-shadow:0 20px 60px rgba(0,0,0,.55)">
       <button id="closeModal" class="btn" style="position:absolute;top:8px;inset-inline-end:8px;z-index:2">✕</button>
@@ -295,7 +295,7 @@
     // ثيم
     const savedTheme = localStorage.getItem('theme');
     if(savedTheme){ document.documentElement.setAttribute('data-theme', savedTheme); }
-    qs('#themeToggle').addEventListener('click', ()=>{
+    qs('#themeToggle')?.addEventListener('click', ()=>{
       const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', cur);
       localStorage.setItem('theme', cur);
@@ -313,7 +313,7 @@
       const s = qs('#search'); if(s) s.setAttribute('placeholder', toEN ? 'Search portfolio…' : 'ابحث في الأعمال…');
     }
     applyLang();
-    qs('#langToggle').addEventListener('click', ()=>{ curLang = (curLang==='ar') ? 'en' : 'ar'; localStorage.setItem('lang', curLang); applyLang(); });
+    qs('#langToggle')?.addEventListener('click', ()=>{ curLang = (curLang==='ar') ? 'en' : 'ar'; localStorage.setItem('lang', curLang); applyLang(); });
 
     // فلترة/بحث
     const chips = qsa('#filters .chip');
@@ -333,16 +333,20 @@
       });
     }
 
-    // GDrive thumbs
-    const driveId = (url)=>{ const m = url.match(/\/file\/d\/([\w-]+)/); return m?m[1]:null; };
+    /*======================*
+     *    Google Drive      *
+     *======================*/
+    const driveId = (url)=>{ const m = (url||'').match(/\/file\/d\/([\w-]+)/); return m?m[1]:null; };
     const thumbCandidates = (id)=>[
       `https://drive.google.com/uc?export=thumbnail&id=${id}`,
       `https://drive.google.com/thumbnail?id=${id}&sz=w1200`,
       `https://lh3.googleusercontent.com/d/${id}=w1200`
     ];
     const drivePreview = (id)=>`https://drive.google.com/file/d/${id}/preview`;
+    const driveDirect  = (id)=>`https://drive.google.com/uc?export=download&id=${id}`; // محاولة تشغيل مباشر كمصدر فيديو
 
     function setThumbWithFallback(img, id){
+      if(!img || !id) return;
       const cands = thumbCandidates(id); let i=0;
       img.onerror = ()=>{ i++; if(i < cands.length){ img.src = cands[i]; } else { img.onerror=null; img.removeAttribute('src'); img.style.background='linear-gradient(135deg,#1f2937,#0f172a)'; } };
       img.src = cands[0];
@@ -354,24 +358,94 @@
     }
     (window.requestIdleCallback || window.setTimeout)(()=>tiles.forEach(hydrateTile), 0);
 
-    // Player modal
-    const modal = qs('#playerModal'); const frame = qs('#playerFrame');
-    function openPlayer(url){
-      const id = driveId(url);
+    /*======================*
+     *  Inline Video Player *
+     *======================*/
+    const modal = qs('#playerModal'); 
+    const frame = qs('#playerFrame');
+    const closeModalBtn = qs('#closeModal');
+
+    function openPreview(id){ // Fallback للمعاينة
       if(!id){ setToast('رابط غير صالح'); return; }
       frame.src = drivePreview(id);
       modal.style.display='flex';
+      modal.setAttribute('aria-hidden','false');
       setTimeout(()=>{ try{ if(!frame.contentWindow){ setToast('لو مافتحش: فعّل Anyone with the link على Google Drive'); } }catch(_e){} }, 2500);
     }
-    tiles.forEach(t=>t.addEventListener('click',()=>openPlayer(t.dataset.link)));
-    qs('#closeModal').addEventListener('click', ()=>{ frame.src=''; modal.style.display='none'; });
-    modal.addEventListener('click', (e)=>{ if(e.target===modal){ frame.src=''; modal.style.display='none'; }});
+    function closePreview(){
+      frame.src=''; modal.style.display='none'; modal.setAttribute('aria-hidden','true');
+    }
+    closeModalBtn?.addEventListener('click', closePreview);
+    modal?.addEventListener('click', (e)=>{ if(e.target===modal) closePreview(); });
 
-    // Quote modal
+    let currentVideo = null;
+    function closeInline(){
+      if(!currentVideo) return;
+      try{
+        currentVideo.pause();
+        const tile = currentVideo.closest('.tile');
+        const img = document.createElement('img');
+        img.setAttribute('loading','lazy');
+        img.setAttribute('referrerpolicy','no-referrer');
+        img.alt = tile?.dataset.title || 'preview';
+        const id = driveId(tile?.dataset.link || '');
+        if(id) setThumbWithFallback(img, id);
+        currentVideo.replaceWith(img);
+      }catch(_e){}
+      currentVideo = null;
+    }
+
+    function playInline(tile){
+      const id = driveId(tile.dataset.link || '');
+      if(!id){ setToast('رابط غير صالح'); return; }
+
+      if(currentVideo && currentVideo.closest('.tile') !== tile) closeInline();
+
+      const img = tile.querySelector('img');
+      const vid = document.createElement('video');
+      vid.setAttribute('playsinline','');
+      vid.setAttribute('muted','');      // يسمح بالـ autoplay على الموبايل
+      vid.setAttribute('controls','');   // تحكم
+      vid.setAttribute('preload','metadata');
+      const poster = img?.getAttribute('src'); if(poster) vid.setAttribute('poster', poster);
+
+      const src = document.createElement('source');
+      src.src = driveDirect(id);         // تشغيل مباشر إن أمكن
+      src.type = 'video/mp4';
+      vid.appendChild(src);
+
+      // لو فشل التشغيل المباشر (خصوصية / 403 / CORS) → افتح المعاينة
+      vid.addEventListener('error', ()=>{
+        try{ if (vid.isConnected && img) vid.replaceWith(img); }catch(_e){}
+        openPreview(id);
+      });
+
+      if (img) img.replaceWith(vid);
+      currentVideo = vid;
+      const p = vid.play();
+      if (p && typeof p.catch==='function') p.catch(()=>{/* تجاهل تحذير autoplay */});
+    }
+
+    // أربط الكروت: تشغيل داخل الكارت بدل فتح المودال مباشرة
+    tiles.forEach(t=>{
+      t.addEventListener('click', ()=>{
+        const exists = t.querySelector('video');
+        if (exists){ if (exists.paused) exists.play(); else exists.pause(); }
+        else { playInline(t); }
+      });
+    });
+
+    // ESC يغلق أي لاعب داخل الكارت + المودال
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeInline(); closePreview(); } });
+
+    /*======================*
+     *   Quote Modal Fix    *
+     *======================*/
     const qm = qs('#quoteModal');
-    qs('#openCalc').addEventListener('click', ()=>{ qm.style.display='flex'; });
-    qs('#closeQuote').addEventListener('click', ()=>{ qm.style.display='none'; });
+    qs('#openCalc')?.addEventListener('click', ()=>{ qm.style.display='flex'; qm.setAttribute('aria-hidden','false'); });
+    qs('#closeQuote')?.addEventListener('click', ()=>{ qm.style.display='none'; qm.setAttribute('aria-hidden','true'); });
 
+    // تخزين/عرض آخر عرض سعر
     const QUOTE_KEY = 'quotes_v1';
     const loadQuotes = () => { try { return JSON.parse(localStorage.getItem(QUOTE_KEY)||'[]'); } catch { return [] } };
     const saveQuotes = (arr) => localStorage.setItem(QUOTE_KEY, JSON.stringify(arr));
@@ -388,7 +462,7 @@
     }
     renderLastQuote();
 
-    qs('#quoteForm').addEventListener('submit',(e)=>{
+    qs('#quoteForm')?.addEventListener('submit',(e)=>{
       e.preventDefault();
       const fd = new FormData(e.target); const o = Object.fromEntries(fd.entries());
       const base = 2500; const mult = {wedding:1.4,commercial:1.6,event:1.2,social:1.1}[o.type]||1.3;
@@ -397,9 +471,10 @@
       const arr = loadQuotes(); arr.push({...o, hours, crew, total, ts:Date.now()}); saveQuotes(arr);
       renderLastQuote();
       setToast(curLang==='en' ? 'Saved your estimate' : 'تم حفظ التقدير');
+      qm.style.display='none'; qm.setAttribute('aria-hidden','true');
     });
 
-    // نجوم الهيدر (إطفاؤه على الشاشات الصغيرة)
+    // نجوم الهيدر (كما هي)
     if(matchMedia('(min-width: 481px)').matches){
       const c = qs('#spark'); if(c){ const ctx = c.getContext('2d');
         let w,h; const DPR = devicePixelRatio || 1;
