@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>بورتفوليو مصور فيديوغرافي</title>
+  <style>
+    :root { --bg:#0b0b0b; --card:#111; --text:#f2f2f2; --muted:#b7b7b7; --primary:#e63946; --shadow:0 10px 30px rgba(0,0,0,.35); }
+    [data-theme="light"] { --bg:#f7f7f7; --card:#fff; --text:#0b0b0b; --muted:#444; --primary:#e11d48; --shadow:0 10px 30px rgba(0,0,0,.1); }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Kufi Arabic",Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+    a{text-decoration:none;color:inherit} .container{width:min(1150px,92%);margin-inline:auto}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 1.2rem;border-radius:14px;border:1px solid transparent;cursor:pointer;font-weight:600;transition:.25s}
+    .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)} .btn-outline{background:transparent;color:var(--text);border-color:#666}
+    .btn:hover{transform:translateY(-2px) scale(1.01)}
+    .hero{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;background:radial-gradient(1200px 500px at 50% 0%, rgba(230,57,70,.15), transparent)}
+    .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35;filter:saturate(110%) contrast(105%)}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.35),rgba(0,0,0,.6))}
+    .hero .content{position:relative;z-index:2;padding:0 1rem}
+    .hero h1{font-size:clamp(32px,5vw,64px);line-height:1.1;margin:0 0 1rem} .hero p{color:var(--muted);max-width:55ch;margin:0 auto 1.2rem}
+    .cta{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+    section{padding:80px 0} .section-title{text-align:center;font-size:clamp(24px,3vw,36px);margin:0 0 18px}
+    .section-sub{text-align:center;color:var(--muted);margin-bottom:34px}
+    .grid{display:grid;gap:18px} .grid.portfolio{grid-template-columns:repeat(12,1fr)}
+    .tile{position:relative;border-radius:18px;overflow:hidden;background:#000;min-height:220px;box-shadow:var(--shadow);cursor:pointer}
+    .tile img,.tile video{width:100%;height:100%;object-fit:cover;display:block}
+    .tile .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,.15));opacity:0;transition:.35s}
+    .tile:hover .overlay{opacity:1}
+    .tile .meta{position:absolute;inset-inline:14px;bottom:12px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .badge{font-size:12px;padding:.38rem .6rem;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25)}
+    .col-6{grid-column:span 6} .col-8{grid-column:span 8} .col-4{grid-column:span 4} .col-12{grid-column:span 12}
+    .services,.offers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:22px;box-shadow:var(--shadow);transition:.25s}
+    .card:hover{transform:translateY(-4px)} .card p{margin:0;color:var(--muted)}
+    .offer{background:linear-gradient(135deg,rgba(230,57,70,.1),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px;backdrop-filter:blur(6px)}
+    .offer .price{font-size:28px;font-weight:800;margin:6px 0 12px}
+    .contact{display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
+    form{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+    .field{display:grid;gap:6px;margin-bottom:12px}
+    .field input,.field textarea,.field select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:var(--text)}
+    [data-theme="light"] .field input,[data-theme="light"] .field textarea,[data-theme="light"] .field select{background:#fff;border-color:#ddd;color:#111}
+    footer{padding:28px 0;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,.08)}
+    .filters{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+    .chip{padding:.5rem .9rem;border-radius:999px;border:1px solid #555;cursor:pointer;font-size:.9rem;transition:.2s}
+    .chip.active,.chip:hover{background:var(--primary);color:#fff;border-color:transparent}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+    .modal.open{display:flex} .modal .box{width:min(1000px,95%);background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+    .modal header{display:flex;gap:10px;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .modal header h4{margin:0;font-size:18px;flex:1} .modal .content{padding:0;display:grid}
+    .modal video,.modal img{width:100%;height:auto;display:block}
+    .responsive-video{position:relative;width:100%;padding-top:56.25%;background:#000}
+    .responsive-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .reveal{transform:translateY(14px);opacity:0;transition:.6s ease} .reveal.visible{transform:none;opacity:1}
+    @media(max-width:900px){.services,.offers{grid-template-columns:1fr 1fr}.contact{grid-template-columns:1fr}.col-8,.col-6,.col-4{grid-column:span 12}}
+    @media(max-width:600px){.services,.offers{grid-template-columns:1fr}.hero p{font-size:.98rem}}
+  </style>
+</head>
+<body>
+  <div class="container" style="position:fixed; left:16px; top:16px; z-index:60">
+    <button id="themeToggle" class="btn btn-outline" aria-label="تبديل المظهر">🌙 / ☀️</button>
+  </div>  <header class="hero">
+    <!-- لو مفيش ملف فيديو محلي، الخلفية المتدرجة هتكون كفاية -->
+    <video autoplay muted loop playsinline>
+      <source src="assets/demo-reel.mp4" type="video/mp4" />
+    </video>
+    <div class="content">
+      <h1 class="reveal">نحوّل لحظاتك إلى فيلم لا يُنسى</h1>
+      <p class="reveal" style="transition-delay:.08s">بورتفوليو مصور فيديوغرافي — مودرن، ديناميكي، ومليان أنيميشن لعرض أعمالك والتواصل مع العملاء بسهولة.</p>
+      <div class="cta reveal" style="transition-delay:.12s">
+        <a href="#portfolio" class="btn btn-primary">شاهد الأعمال</a>
+        <a href="#contact" class="btn btn-outline">اطلب عرض سعر</a>
+      </div>
+    </div>
+  </header>  <section id="portfolio" class="container">
+    <h2 class="section-title reveal">أعمال مختارة</h2>
+    <p class="section-sub reveal">فلتر حسب نوع المشروع</p>
+    <div class="filters reveal" id="filters">
+      <button class="chip active" data-filter="all">الكل</button>
+      <button class="chip" data-filter="wedding">أفراح</button>
+      <button class="chip" data-filter="commercial">إعلانات</button>
+      <button class="chip" data-filter="event">فعاليات</button>
+      <button class="chip" data-filter="social">سوشيال</button>
+    </div><div class="grid portfolio">
+  <!-- 🧩 روابطك كما أرسلتها. ملاحظة: روابط share من فيسبوك قد لا تُضمَّن إلا لو عامة ومصرّح بالتضمين. -->
+  <article class="tile col-8 reveal" data-cat="commercial" data-title="إعلان عطور — Noir" data-link="https://www.facebook.com/share/r/1a2EmRnfy4/">
+    <img src="assets/portfolio-1.jpg" alt="Commercial Ad" />
+    <div class="overlay"></div><div class="meta"><span>إعلان براند</span><span class="badge">60 ثانية</span></div>
+  </article>
+
+  <article class="tile col-4 reveal" data-cat="wedding" data-title="Wedding — Sara & Ali" data-link="https://www.facebook.com/share/v/1FDwmqnbkM/">
+    <img src="assets/portfolio-2.jpg" alt="Wedding Film" />
+    <div class="overlay"></div><div class="meta"><span>فيلم زفاف</span><span class="badge">3 دقائق</span></div>
+  </article>
+
+  <article class="tile col-6 reveal" data-cat="event" data-title="Tech Summit 2025" data-link="https://www.facebook.com/share/v/1BSvEsNCV6/">
+    <img src="assets/portfolio-3.jpg" alt="Event Coverage" />
+    <div class="overlay"></div><div class="meta"><span>تغطية حدث</span><span class="badge">هايلايت</span></div>
+  </article>
+
+  <article class="tile col-6 reveal" data-cat="social" data-title="Reels Pack for Brand X" data-link="https://www.facebook.com/share/v/17EdwxGRWq/">
+    <img src="assets/portfolio-4.jpg" alt="Social Media Reels" />
+    <div class="overlay"></div><div class="meta"><span>ريلز سوشيال</span><span class="badge">9×16</span></div>
+  </article>
+
+  <article class="tile col-12 reveal" data-cat="commercial" data-title="Restaurant Promo" data-link="https://www.facebook.com/share/r/19rVc4PYkx/">
+    <img src="assets/portfolio-5.jpg" alt="Restaurant Promo" />
+    <div class="overlay"></div><div class="meta"><span>برومو مطعم</span><span class="badge">45 ثانية</span></div>
+  </article>
+</div>
+
+  </section>  <section id="services" class="container">
+    <h2 class="section-title reveal">الخدمات</h2>
+    <p class="section-sub reveal">حلول كاملة من التخطيط للتسليم</p>
+    <div class="services">
+      <div class="card reveal"><h3>Wedding Films</h3><p>تغطية سينمائية مع مونتاج عاطفي.</p></div>
+      <div class="card reveal" style="transition-delay:.06s"><h3>Commercial Ads</h3><p>إعلانات سريعة التأثير للسوشيال.</p></div>
+      <div class="card reveal" style="transition-delay:.12s"><h3>Event Coverage</h3><p>توثيق احترافي للفعاليات.</p></div>
+    </div>
+  </section>  <section id="offers" class="container">
+    <h2 class="section-title reveal">عروض وباقات</h2>
+    <p class="section-sub reveal">باكدجات مرنة تناسب احتياجك</p>
+    <div class="offers">
+      <div class="offer reveal"><h3>Social Starter</h3><div class="price">$299</div><p>3 ريلز + مونتاج + تصحيح ألوان</p><br><button class="btn btn-primary">اطلب العرض</button></div>
+      <div class="offer reveal" style="transition-delay:.06s"><h3>Wedding Gold</h3><div class="price">$1299</div><p>تغطية يوم كامل + فيلم 4-6 دقائق + تيزر</p><br><button class="btn btn-primary">احجز الآن</button></div>
+      <div class="offer reveal" style="transition-delay:.12s"><h3>Brand Booster</h3><div class="price">$899</div><p>فيديو رئيسي + 4 نسخ قصيرة</p><br><button class="btn btn-primary">تواصل</button></div>
+    </div>
+  </section>  <section id="contact" class="container">
+    <h2 class="section-title reveal">تواصل</h2>
+    <p class="section-sub reveal">هنرجع لك في أقل من 24 ساعة</p>
+    <div class="contact">
+      <form id="contactForm" class="reveal">
+        <div class="field"><label>الاسم</label><input type="text" name="name" required placeholder="اكتب اسمك هنا" /></div>
+        <div class="field"><label>البريد الإلكتروني</label><input type="email" name="email" required placeholder="you@example.com" /></div>
+        <div class="field"><label>نوع الخدمة</label>
+          <select name="service"><option value="wedding">Wedding</option><option value="commercial">Commercial</option><option value="event">Event</option><option value="social">Social</option></select>
+        </div>
+        <div class="field"><label>الرسالة</label><textarea name="message" rows="4" placeholder="احكي لنا عن مشروعك"></textarea></div>
+        <button class="btn btn-primary" type="submit">إرسال</button>
+      </form>
+      <div class="card reveal" style="height:max-content">
+        <h3>طرق التواصل السريع</h3>
+        <p style="margin-top:6px">واتساب: <a href="#">+2012 345 6789</a></p>
+        <p>إنستجرام: <a href="#">@yourbrand.films</a></p>
+        <p>إيميل: <a href="mailto:hello@yourbrand.com">hello@yourbrand.com</a></p>
+        <p style="color:var(--muted); margin-top:12px">العنوان: القاهرة، مصر</p>
+      </div>
+    </div>
+  </section>  <footer>© 2025 جميع الحقوق محفوظة — YourBrand Films</footer>  <div class="modal" id="modal">
+    <div class="box">
+      <header>
+        <h4 id="modalTitle">عنوان العمل</h4>
+        <a id="modalOpenLink" class="btn btn-primary" href="#" target="_blank" rel="noopener">فتح الفيديو</a>
+        <button id="modalClose" class="btn btn-outline">إغلاق</button>
+      </header>
+      <div class="content" id="modalContent"></div>
+    </div>
+  </div>  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) document.documentElement.setAttribute('data-theme', storedTheme);
+    themeToggle.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next);
+    });
+
+    // Reveal
+    const io = new IntersectionObserver((ents)=>ents.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Filter
+    const tiles = [...document.querySelectorAll('.tile')];
+    const filterBtns = document.querySelectorAll('#filters .chip');
+    filterBtns.forEach(btn => btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
+      const f = btn.dataset.filter; tiles.forEach(t => t.style.display = (f==='all'||t.dataset.cat===f)?'':'none');
+    }));
+
+    // Modal
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalContent = document.getElementById('modalContent');
+    const modalOpenLink = document.getElementById('modalOpenLink');
+    const close = () => modal.classList.remove('open');
+    document.getElementById('modalClose').addEventListener('click', close);
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+    // 🧩 Helpers لاستخراج روابط التضمين
+    const getYouTubeId = (url) => { const m = url.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([\w-]{6,})/i); return m ? m[1] : null; };
+    const getVimeoId  = (url) => { const m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/i); return m ? m[1] : null; };
+    const buildEmbed  = (link) => {
+      if (!link) return null;
+      if (/facebook\.com/i.test(link)) return { kind:'iframe', src:`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(link)}&show_text=false&autoplay=1&mute=1&allowfullscreen=true` };
+      if (/youtu\.be|youtube\.com/i.test(link)) { const id=getYouTubeId(link); if (id) return { kind:'iframe', src:`https://www.youtube.com/embed/${id}?autoplay=1&rel=0` }; }
+      if (/vimeo\.com/i.test(link))      { const id=getVimeoId(link);  if (id) return { kind:'iframe', src:`https://player.vimeo.com/video/${id}?autoplay=1` }; }
+      if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(link)) return { kind:'video', src:link };
+      return null;
+    };
+
+    // فتح المودال وتشغيل الفيديو داخل الموقع
+    tiles.forEach(t => t.addEventListener('click', () => {
+      modalTitle.textContent = t.dataset.title || 'Project';
+      modalContent.innerHTML = '';
+      const link = t.dataset.link;
+      const emb = buildEmbed(link);
+
+      if (emb && emb.kind === 'iframe') {
+        const wrap = document.createElement('div'); wrap.className = 'responsive-video';
+        const iframe = document.createElement('iframe');
+        iframe.src = emb.src; iframe.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture'; iframe.setAttribute('allowfullscreen','true');
+        wrap.appendChild(iframe); modalContent.appendChild(wrap);
+        modalOpenLink.style.display = ''; modalOpenLink.href = link || '#';
+      } else if (emb && emb.kind === 'video') {
+        const v = document.createElement('video'); v.src = emb.src; v.controls = true; v.autoplay = true; v.style.width='100%';
+        modalContent.appendChild(v); modalOpenLink.style.display = link ? '' : 'none'; modalOpenLink.href = link || '#';
+      } else {
+        // fallback للصورة الأصلية + زر خارجي
+        const media = t.querySelector('img')?.cloneNode(true); if (media) modalContent.appendChild(media);
+        modalOpenLink.style.display = link ? '' : 'none'; modalOpenLink.href = link || '#';
+      }
+
+      modal.classList.add('open');
+    }));
+
+    // Contact form demo
+    document.getElementById('contactForm').addEventListener('submit',(e)=>{
+      e.preventDefault(); const data = Object.fromEntries(new FormData(e.target).entries());
+      alert('تم استلام رسالتك!\n\n' + JSON.stringify(data, null, 2)); e.target.reset();
+    });
+  </script></body>
+</html>
