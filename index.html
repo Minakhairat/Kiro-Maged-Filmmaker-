@@ -448,7 +448,7 @@
         estimatedPrice += (crew - 1) * 2000;
       }
       
-      // عرض النتيجة
+      // عرض النتيجة داخل المودال
       quoteResult.style.display = 'block';
       quoteResult.innerHTML = `
         <h4 data-en="Estimated Price">السعر التقديري</h4>
@@ -459,7 +459,8 @@
       // تطبيق اللغة على النتيجة الجديدة
       applyLanguage();
       
-      setToast(currentLang === 'en' ? 'Price calculated successfully' : 'تم حساب السعر بنجاح');
+      // لا نغلق المودال بعد الحساب، نتركه مفتوحاً ليرى المستخدم النتيجة
+      // setToast(currentLang === 'en' ? 'Price calculated successfully' : 'تم حساب السعر بنجاح');
     });
 
     // ===== إصلاح مشكلة الفيديوهات =====
@@ -473,6 +474,28 @@
       return match ? match[1] : null;
     }
 
+    // تحميل الصور المصغرة للفيديوهات
+    function loadVideoThumbnails() {
+      tiles.forEach(tile => {
+        const videoId = getDriveId(tile.dataset.link);
+        const img = tile.querySelector('img');
+        
+        if (videoId && img) {
+          // رابط الصورة المصغرة من جوجل درايف
+          const thumbnailUrl = `https://drive.google.com/thumbnail?id=${videoId}&sz=w1000`;
+          img.src = thumbnailUrl;
+          img.alt = tile.dataset.title || 'معاينة الفيديو';
+          
+          // معالجة الخطأ في تحميل الصورة
+          img.onerror = function() {
+            // إذا فشل تحميل الصورة، نستخدم صورة افتراضية
+            img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgNDAwIDMwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxMjE1MjAiLz4KPHBhdGggZD0iTTE1MCAxMjVMMjc1IDIwMEwxNTAgMjc1VjEyNVoiIGZpbGw9IiNlMTFENDgiLz4KPC9zdmc+';
+            img.alt = 'صورة افتراضية - تعذر تحميل المعاينة';
+          };
+        }
+      });
+    }
+
     // فتح معاينة الفيديو
     function openVideoPreview(id) {
       if (!id) {
@@ -480,9 +503,29 @@
         return;
       }
       
+      // نستخدم رابط embed بدلاً من preview للتوافقية الأفضل
       playerFrame.src = `https://drive.google.com/file/d/${id}/preview`;
       playerModal.style.display = 'flex';
       playerModal.setAttribute('aria-hidden', 'false');
+      
+      // إضافة مستمع للأخطاء في الإطار
+      playerFrame.onload = function() {
+        try {
+          // تحقق مما إذا كان المحتوى محظورًا
+          if (!playerFrame.contentWindow) {
+            showDriveSharingInstructions(id);
+          }
+        } catch (e) {
+          showDriveSharingInstructions(id);
+        }
+      };
+    }
+
+    // عرض تعليمات مشاركة جوجل درايف
+    function showDriveSharingInstructions(id) {
+      setTimeout(() => {
+        setToast('لتفعيل التشغيل: اضغط على "مشاركة" في جوجل درايف واختر "أي شخص لديه الرابط"');
+      }, 2000);
     }
 
     // إغلاق معاينة الفيديو
@@ -506,6 +549,9 @@
         openVideoPreview(videoId);
       });
     });
+
+    // تحميل الصور المصغرة عند بدء التشغيل
+    loadVideoThumbnails();
 
     // ===== تأثير النجوم في الهيدر =====
     const spark = qs('#spark');
