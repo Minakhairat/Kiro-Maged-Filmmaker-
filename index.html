@@ -467,6 +467,75 @@
       opacity: 0.1;
       animation: pulse 3s ease-in-out infinite;
     }
+
+    /* CSS للغة الإنجليزية - LTR */
+    html[lang="en"] {
+      direction: ltr;
+    }
+    
+    html[lang="en"] .container {
+      text-align: left;
+    }
+    
+    html[lang="en"] .hero .content,
+    html[lang="en"] .section-title,
+    html[lang="en"] .section-sub {
+      text-align: center;
+    }
+    
+    html[lang="en"] .about-stats,
+    html[lang="en"] .stat-item,
+    html[lang="en"] .social-icons {
+      text-align: center;
+    }
+    
+    html[lang="en"] .toolbar .left {
+      order: 2;
+    }
+    
+    html[lang="en"] .toolbar .right {
+      order: 1;
+    }
+    
+    html[lang="en"] .quote-actions {
+      justify-content: flex-start;
+    }
+    
+    html[lang="en"] .tile .meta {
+      flex-direction: row;
+    }
+    
+    html[lang="en"] .play::before {
+      transform: translateX(0);
+    }
+    
+    html[lang="en"] .about-content {
+      direction: ltr;
+    }
+    
+    html[lang="en"] .about-text {
+      text-align: left;
+    }
+    
+    html[lang="en"] .main-image {
+      left: auto;
+      right: 0;
+    }
+    
+    html[lang="en"] .secondary-image {
+      right: auto;
+      left: 0;
+    }
+    
+    html[lang="en"] .floating-element:nth-child(1) {
+      left: auto;
+      right: 10%;
+    }
+    
+    html[lang="en"] .floating-element:nth-child(2) {
+      right: auto;
+      left: 15%;
+    }
   </style>
 </head>
 <body>
@@ -788,23 +857,21 @@
       
       console.log('السعر المحسوب:', estimatedPrice); // للتأكد من الحساب
       
-      // عرض النتيجة في المكان الثابت
+      // عرض النتيجة في المكان الثابت - بدون إعادة تطبيق اللغة
+      const isEnglish = currentLang === 'en';
       quoteResult.innerHTML = `
         <div style="text-align: center; width: 100%;">
-          <h4 data-en="Estimated Price" style="margin: 0 0 10px 0; color: var(--primary);">السعر التقديري</h4>
-          <p style="font-size: 2rem; margin: 10px 0; font-weight: 800; color: var(--primary);" data-en="EGP ${estimatedPrice.toLocaleString()}">
-            ${Math.round(estimatedPrice).toLocaleString()} جنيه
+          <h4 style="margin: 0 0 10px 0; color: var(--primary);">${isEnglish ? 'Estimated Price' : 'السعر التقديري'}</h4>
+          <p style="font-size: 2rem; margin: 10px 0; font-weight: 800; color: var(--primary);">
+            ${Math.round(estimatedPrice).toLocaleString()} ${isEnglish ? 'EGP' : 'جنيه'}
           </p>
-          <p style="color:var(--muted);font-size:.9rem; margin: 5px 0;" data-en="Includes: filming, basic editing, and color correction">
-            يشمل: التصوير، المونتاج الأساسي، وتصحيح الألوان
+          <p style="color:var(--muted);font-size:.9rem; margin: 5px 0;">
+            ${isEnglish ? 'Includes: filming, basic editing, and color correction' : 'يشمل: التصوير، المونتاج الأساسي، وتصحيح الألوان'}
           </p>
         </div>
       `;
       
-      // تطبيق اللغة على النتيجة الجديدة
-      applyLanguage();
-      
-      setToast(currentLang === 'en' ? 'Price calculated successfully' : 'تم حساب السعر بنجاح');
+      setToast(isEnglish ? 'Price calculated successfully' : 'تم حساب السعر بنجاح');
     });
 
     // ===== باقي الكود =====
@@ -858,6 +925,7 @@
     function applyLanguage() {
       const toEN = currentLang === 'en';
       document.documentElement.lang = toEN ? 'en' : 'ar';
+      document.documentElement.dir = toEN ? 'ltr' : 'rtl';
       
       qsa('[data-en]').forEach(el => {
         const enText = el.getAttribute('data-en');
