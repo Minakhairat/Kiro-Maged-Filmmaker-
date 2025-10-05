@@ -2,10 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>بورتفوليو مصور فيديوغرافي — نسخة برو</title>
   <meta name="description" content="بورتفوليو تفاعلي لمصور فيديوغرافي: أعمال، أسعار، باقات، حاسبة عرض سعر، حجز مواعيد، حالات نجاح، أسئلة شائعة، وواجهة عربية بالكامل.">
   <style>
+    /* منع التمرير الأفقي */
+    html, body {
+      overflow-x: hidden;
+      position: relative;
+      width: 100%;
+    }
+    
+    * {
+      max-width: 100%;
+    }
+
     :root{
       --bg:#0a0b0f; --surface:#0f1117; --card:#121520; --text:#f5f7fb; --muted:#a7b0c0;
       --primary:#e11d48; --accent:#22d3ee; --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.28);
@@ -94,24 +105,61 @@
     .toast{position:fixed; bottom:18px; inset-inline:18px; display:flex; justify-content:center; z-index:220; pointer-events:none}
     .toast .box{pointer-events:auto;background:var(--surface); border:1px solid rgba(255,255,255,.08); padding:10px 14px; border-radius:10px}
 
-    /* مودال عرض السعر */
-    #quoteModal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:300; background:rgba(0,0,0,.5); backdrop-filter:blur(2px); padding:12px}
-    .quote-card{width:min(820px,94%); max-height:85vh; overflow:auto; background:var(--surface); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:16px; box-shadow:var(--shadow)}
+    /* مودال عرض السعر - معدل */
+    #quoteModal{
+      position:fixed; 
+      inset:0; 
+      display:none; 
+      align-items:center; 
+      justify-content:center; 
+      z-index:300; 
+      background:rgba(0,0,0,.5); 
+      backdrop-filter:blur(2px); 
+      padding:12px;
+    }
+    .quote-card{
+      width:min(820px,94%); 
+      max-height:85vh; 
+      overflow:auto; 
+      background:var(--surface); 
+      border:1px solid rgba(255,255,255,.08); 
+      border-radius:16px; 
+      padding:16px; 
+      box-shadow:var(--shadow);
+    }
     .quote-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
     .field{display:grid;gap:6px}
-    .field input,.field textarea,.field select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a2f3a;background:#0f1117;color:var(--text)}
+    .field input,.field textarea,.field select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid #2a2f3a;
+      background:#0f1117;
+      color:var(--text);
+      font-size:16px; /* منع التكبير على iOS */
+    }
     [data-theme="light"] .field input,[data-theme="light"] .field textarea,[data-theme="light"] .field select{background:#fff;border-color:#ddd;color:#111}
-    .quote-actions{position:sticky; bottom:0; background:linear-gradient(to top, var(--surface), transparent); padding-top:8px; display:flex; gap:8px; justify-content:flex-end; margin-top:8px}
+    .quote-actions{
+      position:sticky; 
+      bottom:0; 
+      background:linear-gradient(to top, var(--surface), transparent); 
+      padding-top:8px; 
+      display:flex; 
+      gap:8px; 
+      justify-content:flex-end; 
+      margin-top:8px;
+    }
     .quote-result{
       margin-top:10px; 
       background:var(--card); 
       border:1px solid rgba(255,255,255,.08); 
       border-radius:12px; 
-      padding:10px;
-      min-height: 80px;
+      padding:20px;
+      min-height: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
     @media(max-width:760px){ .quote-grid{grid-template-columns:1fr} }
     @media (max-width:480px){ .spark{display:none} }
@@ -669,7 +717,97 @@
       setTimeout(() => { toast.style.display = 'none'; }, duration);
     };
 
-    // ===== شريط التقدم =====
+    // ===== إصلاح مودال عرض السعر - الإصلاح النهائي =====
+    const quoteModal = qs('#quoteModal');
+    const openCalcBtn = qs('#openCalc');
+    const closeQuoteBtn = qs('#closeQuote');
+    const quoteForm = qs('#quoteForm');
+    const quoteResult = qs('#quoteResult');
+
+    // فتح مودال عرض السعر
+    openCalcBtn.addEventListener('click', function() {
+      quoteModal.style.display = 'flex';
+      quoteModal.setAttribute('aria-hidden', 'false');
+      // إعادة تعيين النتيجة عند فتح المودال
+      quoteResult.innerHTML = '<p style="color: var(--muted); text-align: center; margin: 0;">سيظهر السعر التقديري هنا بعد الضغط على "احسب"</p>';
+    });
+
+    // إغلاق مودال عرض السعر
+    closeQuoteBtn.addEventListener('click', function() {
+      quoteModal.style.display = 'none';
+      quoteModal.setAttribute('aria-hidden', 'true');
+    });
+
+    // إغلاق بالنقر خارج المودال
+    quoteModal.addEventListener('click', function(e) {
+      if (e.target === quoteModal) {
+        quoteModal.style.display = 'none';
+        quoteModal.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // حساب السعر التقديري - الإصلاح النهائي
+    quoteForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      console.log('تم الضغط على احسب'); // للتأكد من أن الحدث يعمل
+      
+      const formData = new FormData(quoteForm);
+      const data = Object.fromEntries(formData.entries());
+      
+      // أسعار أساسية لكل نوع خدمة
+      const basePrices = {
+        wedding: 18000,
+        commercial: 8000,
+        event: 9500,
+        social: 4500
+      };
+      
+      const hours = parseInt(data.hours) || 4;
+      const crew = parseInt(data.crew) || 1;
+      const type = data.type || 'social';
+      const basePrice = basePrices[type] || 5000;
+      
+      // حساب السعر التقديري - معادلة محسنة
+      let estimatedPrice = basePrice;
+      
+      // تعديل حسب الساعات
+      estimatedPrice += hours * 500;
+      
+      // تعديل حسب عدد أفراد الطاقم
+      estimatedPrice += (crew - 1) * 1500;
+      
+      // تعديل إضافي حسب نوع الخدمة
+      const serviceMultipliers = {
+        wedding: 1.0,
+        commercial: 1.2,
+        event: 1.1,
+        social: 0.9
+      };
+      
+      estimatedPrice = Math.round(estimatedPrice * serviceMultipliers[type]);
+      
+      console.log('السعر المحسوب:', estimatedPrice); // للتأكد من الحساب
+      
+      // عرض النتيجة في المكان الثابت
+      quoteResult.innerHTML = `
+        <div style="text-align: center; width: 100%;">
+          <h4 data-en="Estimated Price" style="margin: 0 0 10px 0; color: var(--primary);">السعر التقديري</h4>
+          <p style="font-size: 2rem; margin: 10px 0; font-weight: 800; color: var(--primary);" data-en="EGP ${estimatedPrice.toLocaleString()}">
+            ${Math.round(estimatedPrice).toLocaleString()} جنيه
+          </p>
+          <p style="color:var(--muted);font-size:.9rem; margin: 5px 0;" data-en="Includes: filming, basic editing, and color correction">
+            يشمل: التصوير، المونتاج الأساسي، وتصحيح الألوان
+          </p>
+        </div>
+      `;
+      
+      // تطبيق اللغة على النتيجة الجديدة
+      applyLanguage();
+      
+      setToast(currentLang === 'en' ? 'Price calculated successfully' : 'تم حساب السعر بنجاح');
+    });
+
+    // ===== باقي الكود =====
     const progress = qs('#progress');
     const onScroll = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -771,94 +909,6 @@
         tile.style.display = (matchCategory && matchText) ? '' : 'none';
       });
     }
-
-    // ===== إصلاح مودال عرض السعر - الإصلاح النهائي =====
-    const quoteModal = qs('#quoteModal');
-    const openCalcBtn = qs('#openCalc');
-    const closeQuoteBtn = qs('#closeQuote');
-    const quoteForm = qs('#quoteForm');
-    const quoteResult = qs('#quoteResult');
-
-    // فتح مودال عرض السعر
-    openCalcBtn.addEventListener('click', function() {
-      quoteModal.style.display = 'flex';
-      quoteModal.setAttribute('aria-hidden', 'false');
-    });
-
-    // إغلاق مودال عرض السعر
-    closeQuoteBtn.addEventListener('click', function() {
-      quoteModal.style.display = 'none';
-      quoteModal.setAttribute('aria-hidden', 'true');
-    });
-
-    // إغلاق بالنقر خارج المودال
-    quoteModal.addEventListener('click', function(e) {
-      if (e.target === quoteModal) {
-        quoteModal.style.display = 'none';
-        quoteModal.setAttribute('aria-hidden', 'true');
-      }
-    });
-
-    // حساب السعر التقديري - الإصلاح النهائي
-    quoteForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      console.log('تم الضغط على احسب'); // للتأكد من أن الحدث يعمل
-      
-      const formData = new FormData(quoteForm);
-      const data = Object.fromEntries(formData.entries());
-      
-      // أسعار أساسية لكل نوع خدمة
-      const basePrices = {
-        wedding: 18000,
-        commercial: 8000,
-        event: 9500,
-        social: 4500
-      };
-      
-      const hours = parseInt(data.hours) || 4;
-      const crew = parseInt(data.crew) || 1;
-      const type = data.type || 'social';
-      const basePrice = basePrices[type] || 5000;
-      
-      // حساب السعر التقديري - معادلة محسنة
-      let estimatedPrice = basePrice;
-      
-      // تعديل حسب الساعات
-      estimatedPrice += hours * 500;
-      
-      // تعديل حسب عدد أفراد الطاقم
-      estimatedPrice += (crew - 1) * 1500;
-      
-      // تعديل إضافي حسب نوع الخدمة
-      const serviceMultipliers = {
-        wedding: 1.0,
-        commercial: 1.2,
-        event: 1.1,
-        social: 0.9
-      };
-      
-      estimatedPrice = Math.round(estimatedPrice * serviceMultipliers[type]);
-      
-      console.log('السعر المحسوب:', estimatedPrice); // للتأكد من الحساب
-      
-      // عرض النتيجة في المكان الثابت
-      quoteResult.innerHTML = `
-        <div style="text-align: center;">
-          <h4 data-en="Estimated Price" style="margin: 0 0 10px 0;">السعر التقديري</h4>
-          <p style="font-size: 1.8rem; margin: 10px 0; font-weight: 800; color: var(--primary);" data-en="EGP ${estimatedPrice.toLocaleString()}">
-            ${Math.round(estimatedPrice).toLocaleString()} جنيه
-          </p>
-          <p style="color:var(--muted);font-size:.9rem; margin: 5px 0;" data-en="Includes: filming, basic editing, and color correction">
-            يشمل: التصوير، المونتاج الأساسي، وتصحيح الألوان
-          </p>
-        </div>
-      `;
-      
-      // تطبيق اللغة على النتيجة الجديدة
-      applyLanguage();
-      
-      setToast(currentLang === 'en' ? 'Price calculated successfully' : 'تم حساب السعر بنجاح');
-    });
 
     // ===== تبديل أماكن الصور كل 5 ثواني =====
     const mainImage = qs('#mainImage');
