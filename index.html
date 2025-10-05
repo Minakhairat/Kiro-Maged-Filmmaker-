@@ -430,58 +430,74 @@
     tiles.forEach(t=>{
       t.addEventListener('click', ()=>{
         const exists = t.querySelector('video');
-        if (exists){ if (exists.paused) exists.play(); else exists.pause(); }
-        else { playInline(t); }
+        if (exists){ if (exists.paused) exists.play(); else exists.pause(); return; }
+        playInline(t);
       });
     });
 
-    // ESC يغلق أي لاعب داخل الكارت + المودال
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeInline(); closePreview(); } });
+    // مودال عرض السعر
+    const quoteModal = qs('#quoteModal');
+    const openCalcBtn = qs('#openCalc');
+    const closeQuoteBtn = qs('#closeQuote');
+    const quoteForm = qs('#quoteForm');
+    const quoteResult = qs('#quoteResult');
 
-    /*======================*
-     *   Quote Modal Fix    *
-     *======================*/
-    const qm = qs('#quoteModal');
-    qs('#openCalc')?.addEventListener('click', ()=>{ qm.style.display='flex'; qm.setAttribute('aria-hidden','false'); });
-    qs('#closeQuote')?.addEventListener('click', ()=>{ qm.style.display='none'; qm.setAttribute('aria-hidden','true'); });
-
-    // تخزين/عرض آخر عرض سعر
-    const QUOTE_KEY = 'quotes_v1';
-    const loadQuotes = () => { try { return JSON.parse(localStorage.getItem(QUOTE_KEY)||'[]'); } catch { return [] } };
-    const saveQuotes = (arr) => localStorage.setItem(QUOTE_KEY, JSON.stringify(arr));
-    function renderLastQuote(){
-      const list = loadQuotes(); const box = qs('#quoteResult'); if(!box) return;
-      if(list.length){
-        const q = list[list.length-1]; box.style.display='block';
-        box.innerHTML = `<strong>${q.name}</strong> — ${q.type} • ${q.hours}h • crew ${q.crew}<br>
-          EGP <span style="font-weight:800">${Number(q.total).toLocaleString('en-US')}</span>
-          ${q.date?`<br><small>${q.date}</small>`:''}
-          ${q.location?`<br><small>${q.location}</small>`:''}`;
-        box.scrollIntoView({behavior:'smooth', block:'nearest'});
-      }
+    function openQuoteModal(){
+      quoteModal.style.display = 'flex';
+      quoteModal.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
     }
-    renderLastQuote();
+    function closeQuoteModal(){
+      quoteModal.style.display = 'none';
+      quoteModal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      quoteResult.style.display = 'none';
+      quoteForm.reset();
+    }
+    openCalcBtn?.addEventListener('click', openQuoteModal);
+    closeQuoteBtn?.addEventListener('click', closeQuoteModal);
+    quoteModal?.addEventListener('click', (e)=>{ if(e.target===quoteModal) closeQuoteModal(); });
 
-    qs('#quoteForm')?.addEventListener('submit',(e)=>{
+    quoteForm?.addEventListener('submit', (e)=>{
       e.preventDefault();
-      const fd = new FormData(e.target); const o = Object.fromEntries(fd.entries());
-      const base = 2500; const mult = {wedding:1.4,commercial:1.6,event:1.2,social:1.1}[o.type]||1.3;
-      const hours = Number(o.hours||4), crew = Number(o.crew||1);
-      const total = Math.round(base*mult + hours*600 + (crew-1)*500);
-      const arr = loadQuotes(); arr.push({...o, hours, crew, total, ts:Date.now()}); saveQuotes(arr);
-      renderLastQuote();
-      setToast(curLang==='en' ? 'Saved your estimate' : 'تم حفظ التقدير');
-      qm.style.display='none'; qm.setAttribute('aria-hidden','true');
+      const fd = new FormData(quoteForm);
+      const data = Object.fromEntries(fd.entries());
+      
+      // حساب تقديري للسعر
+      const base = { wedding: 18000, commercial: 8000, event: 9500, social: 4500 };
+      const hours = parseInt(data.hours) || 4;
+      const crew = parseInt(data.crew) || 1;
+      const type = data.type || 'social';
+      const basePrice = base[type] || 5000;
+      
+      // معادلة تقديرية
+      let price = basePrice * hours / 4;
+      if (crew > 1) price += (crew - 1) * 2000;
+      
+      quoteResult.style.display = 'block';
+      quoteResult.innerHTML = `<h4 data-en="Estimated Price">السعر التقديري</h4>
+        <p data-en="Approximate cost: EGP ${price.toLocaleString()}">التكلفة التقريبية: ${Math.round(price).toLocaleString()} جنيه</p>
+        <p style="color:var(--muted);font-size:.9rem" data-en="Final price may vary after discussion.">السعر النهائي قد يتغير بعد المناقشة.</p>`;
+      applyLang();
     });
 
-    // نجوم الهيدر (كما هي)
-    if(matchMedia('(min-width: 481px)').matches){
-      const c = qs('#spark'); if(c){ const ctx = c.getContext('2d');
-        let w,h; const DPR = devicePixelRatio || 1;
-        function resize(){ w = c.offsetWidth; h = c.offsetHeight; c.width = w*DPR; c.height = h*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);} resize(); addEventListener('resize', resize, {passive:true});
-        const stars = Array.from({length:70},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+0.5,a:Math.random()*1}));
-        (function draw(){ ctx.clearRect(0,0,w,h); for(const s of stars){ s.a += 0.02; const glow=(Math.sin(s.a)+1)/2; ctx.beginPath(); ctx.fillStyle=`rgba(255,255,255,${0.12+glow*0.4})`; ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill(); } requestAnimationFrame(draw); })();
-      }
+    // Spark canvas
+    const spark = qs('#spark');
+    if(spark && spark.getContext){
+      const ctx = spark.getContext('2d');
+      const resize = ()=>{
+        spark.width = spark.offsetWidth;
+        spark.height = spark.offsetHeight;
+        if(spark.width && spark.height){
+          const grad = ctx.createRadialGradient(spark.width/2,0,0,spark.width/2,0,spark.width/2);
+          grad.addColorStop(0,'rgba(225,29,72,.2)');
+          grad.addColorStop(.5,'rgba(34,211,238,.1)');
+          grad.addColorStop(1,'transparent');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0,0,spark.width,spark.height);
+        }
+      };
+      resize(); addEventListener('resize', resize);
     }
   });
   </script>
