@@ -273,232 +273,291 @@
   <div class="toast" id="toast" style="display:none"><div class="box"></div></div>
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const qs  = (s, p=document) => p.querySelector(s);
-    const qsa = (s, p=document) => [...p.querySelectorAll(s)];
-    const setToast = (msg,dur=1600)=>{const t=qs('#toast');t.style.display='flex';t.querySelector('.box').textContent=msg;setTimeout(()=>t.style.display='none',dur)};
+  document.addEventListener('DOMContentLoaded', function() {
+    // ===== وظائف مساعدة =====
+    const qs = (selector, parent = document) => parent.querySelector(selector);
+    const qsa = (selector, parent = document) => Array.from(parent.querySelectorAll(selector));
+    
+    const setToast = (msg, duration = 1600) => {
+      const toast = qs('#toast');
+      toast.style.display = 'flex';
+      toast.querySelector('.box').textContent = msg;
+      setTimeout(() => { toast.style.display = 'none'; }, duration);
+    };
 
-    // تقدم
+    // ===== شريط التقدم =====
     const progress = qs('#progress');
     const onScroll = () => {
-      const max = document.documentElement.scrollHeight - innerHeight;
-      progress.style.transform = `scaleX(${Math.max(0, Math.min(1, scrollY / max))})`;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.transform = `scaleX(${Math.max(0, Math.min(1, window.scrollY / max))})`;
     };
-    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+    window.addEventListener('scroll', onScroll, {passive: true});
+    onScroll();
 
-    // ظهور
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
-    },{threshold:.12, rootMargin: '40px'});
-    qsa('.reveal').forEach(el=>io.observe(el));
+    // ===== تأثير الظهور =====
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '40px' });
+    
+    qsa('.reveal').forEach(el => io.observe(el));
 
-    // ثيم
+    // ===== تبديل الثيم =====
     const savedTheme = localStorage.getItem('theme');
-    if(savedTheme){ document.documentElement.setAttribute('data-theme', savedTheme); }
-    qs('#themeToggle')?.addEventListener('click', ()=>{
-      const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', cur);
-      localStorage.setItem('theme', cur);
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+    
+    qs('#themeToggle').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', current);
+      localStorage.setItem('theme', current);
     });
 
-    // لغة
-    qsa('[data-en]').forEach(el=>{ if(!el.dataset.ar){ el.dataset.ar = (el.textContent||'').trim(); } });
-    qsa('[data-en-ph]').forEach(el=>{ if(!el.dataset.arph){ el.dataset.arph = el.getAttribute('placeholder')||''; } });
-    let curLang = localStorage.getItem('lang') || 'ar';
-    function applyLang(){
-      const toEN = curLang==='en';
+    // ===== تبديل اللغة =====
+    qsa('[data-en]').forEach(el => {
+      if (!el.dataset.ar) {
+        el.dataset.ar = (el.textContent || '').trim();
+      }
+    });
+    
+    qsa('[data-en-ph]').forEach(el => {
+      if (!el.dataset.arph) {
+        el.dataset.arph = el.getAttribute('placeholder') || '';
+      }
+    });
+    
+    let currentLang = localStorage.getItem('lang') || 'ar';
+    
+    function applyLanguage() {
+      const toEN = currentLang === 'en';
       document.documentElement.lang = toEN ? 'en' : 'ar';
-      qsa('[data-en]').forEach(el=>{ const en = el.getAttribute('data-en'); el.textContent = toEN && en ? en : el.dataset.ar; });
-      qsa('[data-en-ph]').forEach(el=>{ const enph = el.getAttribute('data-en-ph'); el.setAttribute('placeholder', toEN ? (enph||el.dataset.arph) : el.dataset.arph); });
-      const s = qs('#search'); if(s) s.setAttribute('placeholder', toEN ? 'Search portfolio…' : 'ابحث في الأعمال…');
+      
+      qsa('[data-en]').forEach(el => {
+        const enText = el.getAttribute('data-en');
+        el.textContent = toEN && enText ? enText : el.dataset.ar;
+      });
+      
+      qsa('[data-en-ph]').forEach(el => {
+        const enPlaceholder = el.getAttribute('data-en-ph');
+        el.setAttribute('placeholder', toEN ? (enPlaceholder || el.dataset.arph) : el.dataset.arph);
+      });
+      
+      const search = qs('#search');
+      if (search) {
+        search.setAttribute('placeholder', toEN ? 'Search portfolio…' : 'ابحث في الأعمال…');
+      }
     }
-    applyLang();
-    qs('#langToggle')?.addEventListener('click', ()=>{ curLang = (curLang==='ar') ? 'en' : 'ar'; localStorage.setItem('lang', curLang); applyLang(); });
+    
+    applyLanguage();
+    
+    qs('#langToggle').addEventListener('click', () => {
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      localStorage.setItem('lang', currentLang);
+      applyLanguage();
+    });
 
-    // فلترة/بحث
+    // ===== فلترة و بحث الأعمال =====
     const chips = qsa('#filters .chip');
     const tiles = qsa('#grid .tile');
     let activeFilter = 'all';
-    chips.forEach(ch=>ch.addEventListener('click', ()=>{
-      chips.forEach(x=>x.classList.remove('active')); ch.classList.add('active');
-      activeFilter = ch.dataset.filter; filterGrid();
-    }));
-    const search = qs('#search'); search?.addEventListener('input', filterGrid);
-    function filterGrid(){
-      const q = (search?.value||'').toLowerCase();
-      tiles.forEach(t=>{
-        const matchCat = activeFilter==='all' || t.dataset.cat===activeFilter;
-        const matchTxt = (t.dataset.title||'').toLowerCase().includes(q);
-        t.style.display = (matchCat && matchTxt) ? '' : 'none';
-      });
-    }
-
-    /*======================*
-     *    Google Drive      *
-     *======================*/
-    const driveId = (url)=>{ const m = (url||'').match(/\/file\/d\/([\w-]+)/); return m?m[1]:null; };
-    const thumbCandidates = (id)=>[
-      `https://drive.google.com/uc?export=thumbnail&id=${id}`,
-      `https://drive.google.com/thumbnail?id=${id}&sz=w1200`,
-      `https://lh3.googleusercontent.com/d/${id}=w1200`
-    ];
-    const drivePreview = (id)=>`https://drive.google.com/file/d/${id}/preview`;
-    const driveDirect  = (id)=>`https://drive.google.com/uc?export=download&id=${id}`; // محاولة تشغيل مباشر كمصدر فيديو
-
-    function setThumbWithFallback(img, id){
-      if(!img || !id) return;
-      const cands = thumbCandidates(id); let i=0;
-      img.onerror = ()=>{ i++; if(i < cands.length){ img.src = cands[i]; } else { img.onerror=null; img.removeAttribute('src'); img.style.background='linear-gradient(135deg,#1f2937,#0f172a)'; } };
-      img.src = cands[0];
-    }
-    function hydrateTile(t){
-      const id = driveId(t.dataset.link); const img = t.querySelector('img');
-      img.alt = t.dataset.title||'preview';
-      if(id){ setThumbWithFallback(img, id); } else { img.style.background='linear-gradient(135deg,#1f2937,#0f172a)'; }
-    }
-    (window.requestIdleCallback || window.setTimeout)(()=>tiles.forEach(hydrateTile), 0);
-
-    /*======================*
-     *  Inline Video Player *
-     *======================*/
-    const modal = qs('#playerModal'); 
-    const frame = qs('#playerFrame');
-    const closeModalBtn = qs('#closeModal');
-
-    function openPreview(id){ // Fallback للمعاينة
-      if(!id){ setToast('رابط غير صالح'); return; }
-      frame.src = drivePreview(id);
-      modal.style.display='flex';
-      modal.setAttribute('aria-hidden','false');
-      setTimeout(()=>{ try{ if(!frame.contentWindow){ setToast('لو مافتحش: فعّل Anyone with the link على Google Drive'); } }catch(_e){} }, 2500);
-    }
-    function closePreview(){
-      frame.src=''; modal.style.display='none'; modal.setAttribute('aria-hidden','true');
-    }
-    closeModalBtn?.addEventListener('click', closePreview);
-    modal?.addEventListener('click', (e)=>{ if(e.target===modal) closePreview(); });
-
-    let currentVideo = null;
-    function closeInline(){
-      if(!currentVideo) return;
-      try{
-        currentVideo.pause();
-        const tile = currentVideo.closest('.tile');
-        const img = document.createElement('img');
-        img.setAttribute('loading','lazy');
-        img.setAttribute('referrerpolicy','no-referrer');
-        img.alt = tile?.dataset.title || 'preview';
-        const id = driveId(tile?.dataset.link || '');
-        if(id) setThumbWithFallback(img, id);
-        currentVideo.replaceWith(img);
-      }catch(_e){}
-      currentVideo = null;
-    }
-
-    function playInline(tile){
-      const id = driveId(tile.dataset.link || '');
-      if(!id){ setToast('رابط غير صالح'); return; }
-
-      if(currentVideo && currentVideo.closest('.tile') !== tile) closeInline();
-
-      const img = tile.querySelector('img');
-      const vid = document.createElement('video');
-      vid.setAttribute('playsinline','');
-      vid.setAttribute('muted','');      // يسمح بالـ autoplay على الموبايل
-      vid.setAttribute('controls','');   // تحكم
-      vid.setAttribute('preload','metadata');
-      const poster = img?.getAttribute('src'); if(poster) vid.setAttribute('poster', poster);
-
-      const src = document.createElement('source');
-      src.src = driveDirect(id);         // تشغيل مباشر إن أمكن
-      src.type = 'video/mp4';
-      vid.appendChild(src);
-
-      // لو فشل التشغيل المباشر (خصوصية / 403 / CORS) → افتح المعاينة
-      vid.addEventListener('error', ()=>{
-        try{ if (vid.isConnected && img) vid.replaceWith(img); }catch(_e){}
-        openPreview(id);
-      });
-
-      if (img) img.replaceWith(vid);
-      currentVideo = vid;
-      const p = vid.play();
-      if (p && typeof p.catch==='function') p.catch(()=>{/* تجاهل تحذير autoplay */});
-    }
-
-    // أربط الكروت: تشغيل داخل الكارت بدل فتح المودال مباشرة
-    tiles.forEach(t=>{
-      t.addEventListener('click', ()=>{
-        const exists = t.querySelector('video');
-        if (exists){ if (exists.paused) exists.play(); else exists.pause(); return; }
-        playInline(t);
+    
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(x => x.classList.remove('active'));
+        chip.classList.add('active');
+        activeFilter = chip.dataset.filter;
+        filterGrid();
       });
     });
+    
+    const search = qs('#search');
+    search.addEventListener('input', filterGrid);
+    
+    function filterGrid() {
+      const query = (search.value || '').toLowerCase();
+      
+      tiles.forEach(tile => {
+        const matchCategory = activeFilter === 'all' || tile.dataset.cat === activeFilter;
+        const matchText = (tile.dataset.title || '').toLowerCase().includes(query);
+        tile.style.display = (matchCategory && matchText) ? '' : 'none';
+      });
+    }
 
-    // مودال عرض السعر
+    // ===== إصلاح مودال عرض السعر =====
     const quoteModal = qs('#quoteModal');
     const openCalcBtn = qs('#openCalc');
     const closeQuoteBtn = qs('#closeQuote');
     const quoteForm = qs('#quoteForm');
     const quoteResult = qs('#quoteResult');
 
-    function openQuoteModal(){
+    // فتح مودال عرض السعر
+    openCalcBtn.addEventListener('click', function() {
       quoteModal.style.display = 'flex';
-      quoteModal.setAttribute('aria-hidden','false');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeQuoteModal(){
-      quoteModal.style.display = 'none';
-      quoteModal.setAttribute('aria-hidden','true');
-      document.body.style.overflow = '';
-      quoteResult.style.display = 'none';
-      quoteForm.reset();
-    }
-    openCalcBtn?.addEventListener('click', openQuoteModal);
-    closeQuoteBtn?.addEventListener('click', closeQuoteModal);
-    quoteModal?.addEventListener('click', (e)=>{ if(e.target===quoteModal) closeQuoteModal(); });
+      quoteModal.setAttribute('aria-hidden', 'false');
+    });
 
-    quoteForm?.addEventListener('submit', (e)=>{
+    // إغلاق مودال عرض السعر
+    closeQuoteBtn.addEventListener('click', function() {
+      quoteModal.style.display = 'none';
+      quoteModal.setAttribute('aria-hidden', 'true');
+    });
+
+    // إغلاق بالنقر خارج المودال
+    quoteModal.addEventListener('click', function(e) {
+      if (e.target === quoteModal) {
+        quoteModal.style.display = 'none';
+        quoteModal.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // حساب السعر التقديري
+    quoteForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      const fd = new FormData(quoteForm);
-      const data = Object.fromEntries(fd.entries());
       
-      // حساب تقديري للسعر
-      const base = { wedding: 18000, commercial: 8000, event: 9500, social: 4500 };
+      const formData = new FormData(quoteForm);
+      const data = Object.fromEntries(formData.entries());
+      
+      // أسعار أساسية لكل نوع خدمة
+      const basePrices = {
+        wedding: 18000,
+        commercial: 8000,
+        event: 9500,
+        social: 4500
+      };
+      
       const hours = parseInt(data.hours) || 4;
       const crew = parseInt(data.crew) || 1;
       const type = data.type || 'social';
-      const basePrice = base[type] || 5000;
+      const basePrice = basePrices[type] || 5000;
       
-      // معادلة تقديرية
-      let price = basePrice * hours / 4;
-      if (crew > 1) price += (crew - 1) * 2000;
+      // حساب السعر التقديري
+      let estimatedPrice = basePrice;
       
+      // تعديل حسب الساعات (أكثر من 4 ساعات)
+      if (hours > 4) {
+        estimatedPrice += (hours - 4) * 1000;
+      }
+      
+      // تعديل حسب عدد أفراد الطاقم
+      if (crew > 1) {
+        estimatedPrice += (crew - 1) * 2000;
+      }
+      
+      // عرض النتيجة
       quoteResult.style.display = 'block';
-      quoteResult.innerHTML = `<h4 data-en="Estimated Price">السعر التقديري</h4>
-        <p data-en="Approximate cost: EGP ${price.toLocaleString()}">التكلفة التقريبية: ${Math.round(price).toLocaleString()} جنيه</p>
-        <p style="color:var(--muted);font-size:.9rem" data-en="Final price may vary after discussion.">السعر النهائي قد يتغير بعد المناقشة.</p>`;
-      applyLang();
+      quoteResult.innerHTML = `
+        <h4 data-en="Estimated Price">السعر التقديري</h4>
+        <p data-en="Approximate cost: EGP ${estimatedPrice.toLocaleString()}">التكلفة التقريبية: ${Math.round(estimatedPrice).toLocaleString()} جنيه</p>
+        <p style="color:var(--muted);font-size:.9rem" data-en="Final price may vary after discussion.">السعر النهائي قد يتغير بعد المناقشة.</p>
+      `;
+      
+      // تطبيق اللغة على النتيجة الجديدة
+      applyLanguage();
+      
+      setToast(currentLang === 'en' ? 'Price calculated successfully' : 'تم حساب السعر بنجاح');
     });
 
-    // Spark canvas
-    const spark = qs('#spark');
-    if(spark && spark.getContext){
-      const ctx = spark.getContext('2d');
-      const resize = ()=>{
-        spark.width = spark.offsetWidth;
-        spark.height = spark.offsetHeight;
-        if(spark.width && spark.height){
-          const grad = ctx.createRadialGradient(spark.width/2,0,0,spark.width/2,0,spark.width/2);
-          grad.addColorStop(0,'rgba(225,29,72,.2)');
-          grad.addColorStop(.5,'rgba(34,211,238,.1)');
-          grad.addColorStop(1,'transparent');
-          ctx.fillStyle = grad;
-          ctx.fillRect(0,0,spark.width,spark.height);
-        }
-      };
-      resize(); addEventListener('resize', resize);
+    // ===== إصلاح مشكلة الفيديوهات =====
+    const playerModal = qs('#playerModal');
+    const playerFrame = qs('#playerFrame');
+    const closeModalBtn = qs('#closeModal');
+
+    // استخراج ID من رابط جوجل درايف
+    function getDriveId(url) {
+      const match = (url || '').match(/\/file\/d\/([\w-]+)/);
+      return match ? match[1] : null;
     }
+
+    // فتح معاينة الفيديو
+    function openVideoPreview(id) {
+      if (!id) {
+        setToast('رابط غير صالح');
+        return;
+      }
+      
+      playerFrame.src = `https://drive.google.com/file/d/${id}/preview`;
+      playerModal.style.display = 'flex';
+      playerModal.setAttribute('aria-hidden', 'false');
+    }
+
+    // إغلاق معاينة الفيديو
+    function closeVideoPreview() {
+      playerFrame.src = '';
+      playerModal.style.display = 'none';
+      playerModal.setAttribute('aria-hidden', 'true');
+    }
+
+    closeModalBtn.addEventListener('click', closeVideoPreview);
+    playerModal.addEventListener('click', function(e) {
+      if (e.target === playerModal) {
+        closeVideoPreview();
+      }
+    });
+
+    // ربط النقر على الكروت بفتح الفيديو
+    tiles.forEach(tile => {
+      tile.addEventListener('click', function() {
+        const videoId = getDriveId(tile.dataset.link);
+        openVideoPreview(videoId);
+      });
+    });
+
+    // ===== تأثير النجوم في الهيدر =====
+    const spark = qs('#spark');
+    if (spark && spark.getContext && window.matchMedia('(min-width: 481px)').matches) {
+      const ctx = spark.getContext('2d');
+      let width, height;
+      const DPR = window.devicePixelRatio || 1;
+      
+      function resize() {
+        width = spark.offsetWidth;
+        height = spark.offsetHeight;
+        spark.width = width * DPR;
+        spark.height = height * DPR;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      }
+      
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+      
+      const stars = Array.from({ length: 70 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 2 + 0.5,
+        a: Math.random() * 1
+      }));
+      
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        
+        for (const star of stars) {
+          star.a += 0.02;
+          const glow = (Math.sin(star.a) + 1) / 2;
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.12 + glow * 0.4})`;
+          ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
+        requestAnimationFrame(draw);
+      }
+      
+      draw();
+    }
+
+    // إغلاق المودالات بالضغط على ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeVideoPreview();
+        quoteModal.style.display = 'none';
+        quoteModal.setAttribute('aria-hidden', 'true');
+      }
+    });
   });
   </script>
 </body>
