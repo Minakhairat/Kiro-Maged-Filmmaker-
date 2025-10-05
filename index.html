@@ -105,6 +105,137 @@
     .quote-result{margin-top:10px; background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:10px}
     @media(max-width:760px){ .quote-grid{grid-template-columns:1fr} }
     @media (max-width:480px){ .spark{display:none} }
+
+    /* قسم عن المصور */
+    .about-section {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--card) 100%);
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      padding: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 30px 20px;
+      }
+    }
+
+    .about-text h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: block;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .about-images {
+      position: relative;
+      height: 500px;
+    }
+
+    .main-image {
+      width: 70%;
+      height: 400px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: var(--shadow);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      border: 3px solid var(--primary);
+    }
+
+    .secondary-image {
+      width: 60%;
+      height: 350px;
+      border-radius: 18px;
+      object-fit: cover;
+      box-shadow: var(--shadow);
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 1;
+      border: 3px solid var(--accent);
+    }
+
+    .image-frame {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      pointer-events: none;
+    }
+
+    .floating-element {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.3;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .floating-element:nth-child(2) {
+      bottom: 20%;
+      right: 15%;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
   </style>
 </head>
 <body>
@@ -132,6 +263,51 @@
     </div>
     <canvas id="spark" class="spark" aria-hidden="true"></canvas>
   </header>
+
+  <!-- قسم عن المصور -->
+  <section id="about" class="container">
+    <div class="about-section reveal">
+      <div class="about-content">
+        <div class="about-text">
+          <h2 data-en="About the Filmmaker">عن المصور</h2>
+          <p data-en="With over 5 years of experience in videography and filmmaking, I specialize in creating cinematic wedding films, commercial ads, and event coverage. My passion is to transform ordinary moments into extraordinary visual stories that last forever.">
+            مع أكثر من 5 سنوات من الخبرة في مجال التصوير الفيديوي وصناعة الأفلام، أتخصص في صناعة أفلام الزفاف السينمائية، الإعلانات التجارية، وتغطية الفعاليات. شغفي هو تحويل اللحظات العادية إلى قصص بصرية استثنائية تبقى للأبد.
+          </p>
+          <p data-en="Every project is a new story waiting to be told. Let's create something amazing together.">
+            كل مشروع هو قصة جديدة تنتظر أن تُحكى. دعونا نصنع شيئاً مذهلاً معاً.
+          </p>
+          
+          <div class="about-stats">
+            <div class="stat-item">
+              <span class="stat-number">50+</span>
+              <span class="stat-label" data-en="Projects">مشروع</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">5+</span>
+              <span class="stat-label" data-en="Years Experience">سنوات خبرة</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">100%</span>
+              <span class="stat-label" data-en="Satisfied Clients">عملاء سعداء</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="about-images">
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
+          <div class="image-frame"></div>
+          <!-- استبدل الروابط بالصور الحقيقية -->
+          <img src="https://raw.githubusercontent.com/Minakhairat/Kiro-Maged-Filmmaker-/8274621b748dbf5cdd776a7c7eb8e83bb677e8ec/WhatsApp%20Image%202025-10-05%20at%201.48.22%20PM.jpeg" 
+               alt="كيرو ماجد - مصور فيديوغرافي" 
+               class="main-image">
+          <img src="https://raw.githubusercontent.com/Minakhairat/Kiro-Maged-Filmmaker-/8274621b748dbf5cdd776a7c7eb8e83bb677e8ec/WhatsApp%20Image%202025-10-05%20at%201.49.03%20PM.jpeg" 
+               alt="كيرو ماجد أثناء العمل" 
+               class="secondary-image">
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="portfolio" class="container">
     <h2 class="section-title reveal" data-en="Selected Work">أعمال مختارة</h2>
@@ -399,6 +575,9 @@
     openCalcBtn.addEventListener('click', function() {
       quoteModal.style.display = 'flex';
       quoteModal.setAttribute('aria-hidden', 'false');
+      // إعادة تعيين النتيجة عند فتح المودال
+      quoteResult.style.display = 'none';
+      quoteResult.innerHTML = '';
     });
 
     // إغلاق مودال عرض السعر
@@ -415,7 +594,7 @@
       }
     });
 
-    // حساب السعر التقديري
+    // حساب السعر التقديري - الإصلاح النهائي
     quoteForm.addEventListener('submit', function(e) {
       e.preventDefault();
       
@@ -452,15 +631,22 @@
       quoteResult.style.display = 'block';
       quoteResult.innerHTML = `
         <h4 data-en="Estimated Price">السعر التقديري</h4>
-        <p data-en="Approximate cost: EGP ${estimatedPrice.toLocaleString()}">التكلفة التقريبية: ${Math.round(estimatedPrice).toLocaleString()} جنيه</p>
-        <p style="color:var(--muted);font-size:.9rem" data-en="Final price may vary after discussion.">السعر النهائي قد يتغير بعد المناقشة.</p>
+        <p style="font-size: 1.2rem; margin: 10px 0;" data-en="Approximate cost: EGP ${estimatedPrice.toLocaleString()}">
+          <strong>التكلفة التقريبية: ${Math.round(estimatedPrice).toLocaleString()} جنيه</strong>
+        </p>
+        <p style="color:var(--muted);font-size:.9rem; margin: 5px 0;" data-en="Includes: filming, basic editing, and color correction">
+          يشمل: التصوير، المونتاج الأساسي، وتصحيح الألوان
+        </p>
+        <p style="color:var(--muted);font-size:.9rem; margin: 5px 0;" data-en="Final price may vary after discussion.">
+          السعر النهائي قد يتغير بعد المناقشة والتفاصيل النهائية.
+        </p>
       `;
       
       // تطبيق اللغة على النتيجة الجديدة
       applyLanguage();
       
-      // لا نغلق المودال بعد الحساب، نتركه مفتوحاً ليرى المستخدم النتيجة
-      // setToast(currentLang === 'en' ? 'Price calculated successfully' : 'تم حساب السعر بنجاح');
+      // تمرير النتيجة للأسفل لرؤيتها
+      quoteResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
 
     // ===== إصلاح مشكلة الفيديوهات =====
